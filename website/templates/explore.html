@@ -3,10 +3,14 @@ content%}
 
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="{{ url_for('static', filename='js/explore.js') }}"></script>
 </head>
 
 <h1>explore page</h1>
+
+<div class="mb-3">
+  <label for="text-data" class="form-label">Enter message here!</label>
+  <textarea class="form-control" id="text-data" rows="5"></textarea>
+</div>
 
 <button class="btn btn-primary" id="start">start</button>
 <button class="btn btn-primary" id="stop">stop</button>
@@ -15,5 +19,60 @@ content%}
 <p class="fs-1" id="result"></p>
 
 <p class="fs-1" id="output"></p>
+
+<script>
+  // record audio
+  var startButton = document.getElementById("start");
+  var stopButton = document.getElementById("stop");
+  var resultElement = document.getElementById("result");
+
+  var recognition = new webkitSpeechRecognition();
+  recognition.lang = window.navigator.language;
+  recognition.interimResults = true;
+
+  startButton.addEventListener("click", () => {
+    recognition.start();
+  });
+  stopButton.addEventListener("click", () => {
+    recognition.stop();
+  });
+
+  recognition.addEventListener("result", (event) => {
+    const result = event.results[event.results.length - 1][0].transcript;
+    resultElement.textContent = result;
+  });
+
+  function sendData() {
+    // getting data files
+    var speechData = resultElement.textContent;
+    var textData = document.getElementById("text-data").value;
+
+    // checking length of data
+    if (speechData.length > 0) {
+      var analysisData = speechData;
+      console.log("speech data sent");
+    } else if (textData.length > 0) {
+      var analysisData = textData;
+      console.log("text data sent");
+    } else {
+      console.log("No data to send.");
+    }
+
+    // declaring output location
+    var output = document.getElementById("output");
+    $.ajax({
+      url: "/process",
+      type: "POST",
+      data: { data: analysisData },
+      success: function (response) {
+        console.log(response);
+        output.textContent = response;
+      },
+      error: function (error) {
+        console.log(error);
+      },
+    });
+  }
+</script>
 
 {% endblock %}
