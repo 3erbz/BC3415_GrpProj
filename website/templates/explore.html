@@ -1,9 +1,9 @@
-{% extends "base.html" %} {% block title %} Explore {% endblock %} {% block
+{% extends "base/base.html" %} {% block title %} Explore {% endblock %} {% block
 content%}
 
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="user/scripts/explore.js"></script>
+  <script src="{{ url_for('static', filename='js/explore.js') }}"></script>
 </head>
 
 <h1>explore page</h1>
