@@ -16,7 +16,7 @@ def explore_result ():
         # register data
         text_data = request.form['text_data']
         speech_data = request.form.get ('speech_data')
-
+        
         print (speech_data)
 
         # append data to dictionary
@@ -35,3 +35,10 @@ def explore_result ():
         print (res_data)
         
         return render_template ("explore_result.html",user=current_user,data=res_data)
+
+@explore_page.route ('/process', methods=['POST'])
+def process():
+    global data
+    data = request.form.get ('data')
+    print (data)
+    return data
