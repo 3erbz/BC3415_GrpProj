@@ -14,6 +14,7 @@ def create_app ():
     
     # import views from different apps
     from .auth.start import auth_views
+    from .pages.home import home_page
     from .pages.forum import forum_page
     from .pages.rewards import rewards_page
     from .pages.explore import explore_page
