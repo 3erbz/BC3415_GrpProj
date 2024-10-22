@@ -10,7 +10,7 @@ content%}
 <button class="btn btn-primary" id="start">start</button>
 <button class="btn btn-primary" id="stop">stop</button>
 
-<form action="/explore/result" method="post">
+<form action="/explore/result" method="post" enctype="multipart/form-data">
   <p id="speech_shown"></p>
   <div class="mb-3">
     <label for="text-data" class="form-label">Enter message here!</label>
@@ -23,6 +23,11 @@ content%}
     id="speech_data"
     rows="5"
   ></textarea>
+  <div id="mb-3">
+    <label for="wav_data" class="form-label">Upload file here!</label>
+    <input type="file" name="audio_data" />
+  </div>
+
   <input type="submit" id="submitButton" class="btn btn-primary" />
 </form>
 
