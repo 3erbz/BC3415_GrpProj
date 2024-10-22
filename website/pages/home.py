@@ -8,6 +8,7 @@ home_page = Blueprint ('home_page', __name__, template_folder='/templates')
 @login_required
 def news ():
     api_key = "cc3747f4309f44bb9cc0c5d2bbd336df"
+    # would need to uplpad api key to render 
     url = f"https://newsapi.org/v2/everything?q=scam&apiKey={api_key}"
     response = requests.get (url)
 

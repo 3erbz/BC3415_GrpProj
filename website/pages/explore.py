@@ -11,34 +11,22 @@ def explore ():
 @explore_page.route ('/explore/result', methods=['GET', 'POST'])
 @login_required
 def explore_result ():
+    final_data = {}       
     if request.method == 'POST':
-        final_data  = {}
         # register data
-        text_data = request.form['text_data']
+        text_data = request.form.get('text_data')
         speech_data = request.form.get ('speech_data')
-        
-        print (speech_data)
 
-        # append data to dictionary
         final_data ["text"] = text_data
         final_data ["speech"] = speech_data
+    
+    import textblob
+    analysis_data = {}
+    for data, content in final_data.items ():
+        if content == None or content != "":
+            analysis = textblob.TextBlob (content).sentiment
+            analysis_data [data] = {"polarity": analysis.polarity, "subjectivity": analysis.subjectivity}
 
-        # process data and generate response data
-        res_data = {}
-        import textblob
-        for data, content in final_data.items ():
-            if content != None:
-                analysis = textblob.TextBlob (content).sentiment
-                res_data [data] = {"polarity": analysis.polarity, "subjectivity": analysis.subjectivity}
-
+    final_data = analysis_data
         
-        print (res_data)
-        
-        return render_template ("explore_result.html",user=current_user,data=res_data)
-
-@explore_page.route ('/process', methods=['POST'])
-def process():
-    global data
-    data = request.form.get ('data')
-    print (data)
-    return data
+    return render_template ("explore_result.html",user=current_user,data=final_data)
