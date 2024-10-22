@@ -7,14 +7,22 @@ content%}
 
 <h1>explore page</h1>
 
-<button class="btn btn-primary" id="start">start</button>
-<button class="btn btn-primary" id="stop">stop</button>
+<div class="form-floating">
+  <button class="btn btn-primary" id="start">Start Recording</button>
+  <button class="btn btn-danger" id="stop">Stop Recording</button>
+</div>
+<br />
 
 <form action="/explore/result" method="post" enctype="multipart/form-data">
-  <p id="speech_shown"></p>
+  <p class="fs-1" id="speech_shown"></p>
   <div class="mb-3">
     <label for="text-data" class="form-label">Enter message here!</label>
-    <textarea class="form-control" name="text_data" rows="5"></textarea>
+    <textarea
+      style="resize: none"
+      class="form-control"
+      name="text_data"
+      rows="5"
+    ></textarea>
   </div>
   <textarea
     hidden
@@ -25,10 +33,13 @@ content%}
   ></textarea>
   <div id="mb-3">
     <label for="wav_data" class="form-label">Upload file here!</label>
+    <br />
     <input type="file" name="audio_data" />
   </div>
-
-  <input type="submit" id="submitButton" class="btn btn-primary" />
+  <br />
+  <button type="submit" id="submitButton" class="btn btn-primary">
+    Submit
+  </button>
 </form>
 
 <script>
@@ -37,7 +48,7 @@ content%}
   const stopButton = document.getElementById("stop");
   const speech_result = document.getElementById("speech_shown");
 
-  var recognition = new webkitSpeechRecognition();
+  const recognition = new webkitSpeechRecognition();
   recognition.lang = window.navigator.language;
   recognition.interimResults = true;
 
