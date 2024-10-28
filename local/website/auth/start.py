@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 import torch
 from diffusers import StableDiffusionPipeline
+import time
 
 auth_views = Blueprint ('auth_views', __name__, template_folder='website/templates')
 
@@ -81,17 +82,20 @@ def process():
 
     # stable diffusion model
     model_id = "Meina/MeinaMix_V11"
-    pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16, use_safetensors=True )
-    pipe = pipe.to("cuda")
+    pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32, use_safetensors=True )
     pipe.safety_checker = None
 
     # generate image from model
     prompt = f"generate a profile picture for {firstName}, without any signs of visible text"
 
     steps = 60
-    h = 400
-    w = 400
+    h = 240
+    w = 240
 
     image = pipe (prompt, height=h, width=w, number_of_inference_steps=steps).images [0]
 
-    return image
+    image.save("website/static/assets/output.png")
+
+    time.sleep(2)  # simulate processing time
+
+    return "success"

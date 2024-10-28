@@ -4,9 +4,21 @@ content%}
   <script src="{{url_for ('static',
   filename='/scripts/sign-up.js')}}"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="{{url_for ('static',
+  filename='/styles/sign-up.css')}}"
+  />
 </head>
 
 <br />
+
+<div class="container">
+  <h3 hidden id="profile-pic-header" class="text-center">
+    Generated Profile Image
+  </h3>
+  <br />
+</div>
 
 <div class="container text-center">
   <img
@@ -16,10 +28,16 @@ content%}
     height="249"
     id="code-gif"
   />
+  <img
+    hidden
+    src="{{url_for ('static', filename='/assets/output.png')}}"
+    id="profile-pic"
+  />
+  <div hidden id="loader" class="container text-center"></div>
 </div>
 
 <div class="container">
-  <h3 class="text-center">Sign Up</h3>
+  <h3 id="sign-up-header" class="text-center">Sign Up</h3>
   <div class="text-center"></div>
   <div class="form-group p-2">
     <label for="firstName"> First Name </label>

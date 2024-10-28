@@ -1,6 +1,9 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
+import torch
+from diffusers import StableDiffusionPipeline
+import time
 
 auth_views = Blueprint ('auth_views', __name__, template_folder='website/templates')
 
@@ -37,8 +40,8 @@ def logout ():
     logout_user ()
     return redirect (url_for('auth_views.login'))
 
-@auth_views.route ('/sign-up', methods = ['GET', 'POST'])
-def sign_up ():
+@auth_views.route ('/sign-up/confirm', methods = ['GET', 'POST'])
+def sign_up_confirm ():
     from website.models import User
     if request.method == 'POST':
         email = request.form.get('email')
@@ -66,5 +69,33 @@ def sign_up ():
             flash ('Account created', category='success')
             return redirect (url_for('auth_views.login'))
 
-    return render_template ("sign_up.html", user=current_user)
+    return render_template ("sign_up_confirm.html", user=current_user)
 
+@auth_views.route('/sign-up', methods=['GET','POST'])
+def sign_up():
+    return render_template("sign_up.html", user=current_user)
+
+@ auth_views.route('/process', methods=['POST'])
+def process():
+    data = request.get_json()
+    firstName = data['firstName']
+
+    # stable diffusion model
+    model_id = "Meina/MeinaMix_V11"
+    pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32, use_safetensors=True )
+    pipe.safety_checker = None
+
+    # generate image from model
+    prompt = f"generate a profile picture for {firstName}, without any signs of visible text"
+
+    steps = 60
+    h = 240
+    w = 240
+
+    image = pipe (prompt, height=h, width=w, number_of_inference_steps=steps).images [0]
+
+    image.save("website/static/assets/output.png")
+
+    time.sleep(2)  # simulate processing time
+
+    return "success"

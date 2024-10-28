@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-import os
 
 # database initialisation
 db = SQLAlchemy ()
@@ -10,15 +9,7 @@ DB_NAME = "database.db"
 def create_app ():
     app = Flask(__name__)
     app.config ['SECRET_KEY'] = 'BC3415'
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-
-    # externel database link for render
-    # format (username, password, host, database name)
-    # postgresql://ai_spam_user:SnDrgfmQFOOTEBhCtTrPKPOgS5ByEEnA@dpg-crudpkggph6c73agm96g-a.oregon-postgres.render.com/ai_spam
-
-    # internal database link for render
-    # postgresql://ai_spam_user:SnDrgfmQFOOTEBhCtTrPKPOgS5ByEEnA@dpg-crudpkggph6c73agm96g-a/ai_spam 
-    
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
     
     # import views from different apps

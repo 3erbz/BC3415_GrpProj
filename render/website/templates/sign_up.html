@@ -1,6 +1,24 @@
 {% extends "base/base.html" %} {% block title %} Sign Up {% endblock %} {% block
 content%}
+<head>
+  <script src="{{url_for ('static',
+  filename='/scripts/sign-up.js')}}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="{{url_for ('static',
+  filename='/styles/sign-up.css')}}"
+  />
+</head>
+
 <br />
+
+<div class="container">
+  <h3 hidden id="profile-pic-header" class="text-center">
+    Generated Profile Image
+  </h3>
+  <br />
+</div>
 
 <div class="container text-center">
   <img
@@ -10,22 +28,18 @@ content%}
     height="249"
     id="code-gif"
   />
+  <img
+    hidden
+    src="{{url_for ('static', filename='/assets/output.png')}}"
+    id="profile-pic"
+  />
+  <div hidden id="loader" class="container text-center"></div>
 </div>
 
-<form method="POST">
-  <h3 class="text-center">Sign Up</h3>
-  <div class="form-group">
-    <label for="email"> Email Address </label>
-    <input
-      type="email"
-      class="form-control"
-      id="email"
-      name="email"
-      placeholder="Enter email"
-    />
-  </div>
-
-  <div class="firstName">
+<div class="container">
+  <h3 id="sign-up-header" class="text-center">Sign Up</h3>
+  <div class="text-center"></div>
+  <div class="form-group p-2">
     <label for="firstName"> First Name </label>
     <input
       type="text"
@@ -35,31 +49,12 @@ content%}
       placeholder="Enter first name"
     />
   </div>
+</div>
 
-  <div class="form-group">
-    <label for="password1"> Password </label>
-    <input
-      type="password"
-      class="form-control"
-      id="password1"
-      name="password1"
-      placeholder="Enter password"
-    />
-  </div>
+<br />
 
-  <div class="form-group">
-    <label for="password2"> Password (Confirm) </label>
-    <input
-      type="password"
-      class="form-control"
-      id="password2"
-      name="password2"
-      placeholder="Confirm password"
-    />
-  </div>
+<div class="text-center">
+  <button class="btn btn-primary" onclick="sendData()">Next</button>
+</div>
 
-  <br />
-
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
 {% endblock %}
