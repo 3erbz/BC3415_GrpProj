@@ -11,8 +11,6 @@ content%}
   />
 </head>
 
-<br />
-
 <div class="container">
   <h3 hidden id="profile-pic-header" class="text-center">
     Generated Profile Image
@@ -36,31 +34,68 @@ content%}
   <div hidden id="loader" class="container text-center"></div>
 </div>
 
-<div id="firstName-div" class="container">
+<div class="container">
   <h3 id="sign-up-header" class="text-center">Sign Up</h3>
   <div class="text-center"></div>
-  <div class="form-group p-2">
-    <label for="firstName"> First Name </label>
-    <input
-      type="text"
-      class="form-control"
-      id="firstName"
-      name="firstName"
-      placeholder="Enter first name"
-    />
+  <form method="POST">
+    <div class="form-group p-2">
+      <label for="email"> Email Address </label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        placeholder="Enter email"
+      />
+    </div>
+
+    <div class="form-group p-2">
+      <label for="firstName"> First Name </label>
+      <input
+        type="text"
+        class="form-control"
+        id="firstName"
+        name="firstName"
+        placeholder="Enter first name"
+      />
+    </div>
+
+    <div class="form-group p-2">
+      <label for="password1"> Password </label>
+      <input
+        type="password"
+        class="form-control"
+        id="password1"
+        name="password1"
+        placeholder="Enter password"
+      />
+    </div>
+
+    <div class="form-group p-2">
+      <label for="password2"> Password (Confirm) </label>
+      <input
+        type="password"
+        class="form-control"
+        id="password2"
+        name="password2"
+        placeholder="Confirm password"
+      />
+    </div>
+  </form>
+
+  <div class="text-center">
+    <button
+      id="generate-profile-pic"
+      class="btn btn-primary"
+      onclick="sendData ()"
+    >
+      Generate Profile Pic!
+    </button>
+
+    <button hidden type="submit" id="submit-button" class="btn btn-primary">
+      Submit
+    </button>
   </div>
-</div>
-
-<br />
-
-<div id="profile-pic-button" class="text-center">
-  <button class="btn btn-primary" onclick="sendData()">Generate Image</button>
-</div>
-
-<div hidden id="submit-button" class="text-center">
-  <button type="submit" class="btn btn-primary" onclick="sendData()">
-    Next
-  </button>
 </div>
 
 {% endblock %}

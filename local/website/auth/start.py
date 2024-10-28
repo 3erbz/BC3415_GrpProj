@@ -96,6 +96,9 @@ def process():
 
     image.save("website/static/assets/output.png")
 
-    time.sleep(2)  # simulate processing time
+    # simulate processing time
+    time.sleep(2) 
 
+    # commit image to database
+    
     return "success"

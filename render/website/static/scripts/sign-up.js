@@ -4,10 +4,11 @@ function sendData() {
 
   // hide elements
   document.getElementById("code-gif").hidden = true;
-  document.getElementById("loader").hidden = false;
   document.getElementById("sign-up-header").hidden = true;
-  document.getElementById("firstName-div").hidden = true;
-  document.getElementById("profile-pic-button").hidden = true;
+  document.getElementById("generate-profile-pic").hidden = true;
+
+  // show loading bar
+  document.getElementById("loader").hidden = false;
 
   $.ajax({
     url: "/process",
