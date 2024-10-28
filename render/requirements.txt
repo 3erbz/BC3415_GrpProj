@@ -6,3 +6,6 @@ psycopg2
 requests
 textblob
 SpeechRecognition
+torch
+diffusers
+time

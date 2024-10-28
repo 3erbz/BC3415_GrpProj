@@ -88,7 +88,7 @@ def process():
     # generate image from model
     prompt = f"generate a profile picture for {firstName}, without any signs of visible text"
 
-    steps = 60
+    steps = 50
     h = 240
     w = 240
 
