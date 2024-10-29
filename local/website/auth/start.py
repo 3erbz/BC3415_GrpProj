@@ -1,9 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
-import torch
-from diffusers import StableDiffusionPipeline
-from werkzeug.utils import secure_filename
 
 auth_views = Blueprint ('auth_views', __name__, template_folder='website/templates')
 

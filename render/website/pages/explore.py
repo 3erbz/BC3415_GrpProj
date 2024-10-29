@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-import speech_recognition as sr
-import textblob
-from website.pages.scam_detection import predict_scam
+
+
 
 explore_page= Blueprint ('explore_page', __name__, template_folder='/templates')
 
@@ -16,6 +15,17 @@ def explore ():
 def explore_result ():
     data_received = {}       
     if request.method == 'POST':
+        # import packages
+        import google.generativeai as genai
+        import speech_recognition as sr
+        import textblob
+        from website.pages.scam_detection import predict_scam
+
+        # load genai model
+        api_key = "AIzaSyDD3fsLbkFRdP0UXhhJTjDOJ5XyHNMZyb0"
+        genai.configure (api_key=api_key)
+        model=genai.GenerativeModel ('gemini-1.5-flash')
+
         # receiving data
         text_data = request.form.get('text_data')
         speech_data = request.form.get ('speech_data')
@@ -46,7 +56,7 @@ def explore_result ():
     # analysing data using textblob
     analysis_data = {}
     for data, content in data_received.items ():
-        if content == None or content != "":
+        if content:
             analysis = textblob.TextBlob (content).sentiment
             analysis_data [data] = {"polarity": analysis.polarity, "subjectivity": analysis.subjectivity}
         
@@ -63,7 +73,8 @@ def explore_result ():
                 spam_results[data_type] = f"Error: {str(e)}"
 
     # scam detection using gemini
-    
+    # gemini_results = {}
+
     
     # Render the results in explore_result.html
     return render_template("explore_result.html", user=current_user,
