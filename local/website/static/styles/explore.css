@@ -3,6 +3,7 @@ textarea.form-control {
   resize: none;
 }
 
+/* glitch effect */
 .glitch {
   font-size: 4rem;
   font-weight: 700;
@@ -98,7 +99,7 @@ textarea.form-control {
   animation: 1s blink ease infinite;
 }
 
-@keyframes "blink" {
+@keyframes blink {
   from,
   to {
     opacity: 0;
@@ -118,7 +119,7 @@ textarea.form-control {
   }
 }
 
-@-webkit-keyframes "blink" {
+@-webkit-keyframes blink {
   from,
   to {
     opacity: 0;
@@ -128,7 +129,7 @@ textarea.form-control {
   }
 }
 
-@-ms-keyframes "blink" {
+@-ms-keyframes blink {
   from,
   to {
     opacity: 0;
@@ -138,7 +139,7 @@ textarea.form-control {
   }
 }
 
-@-o-keyframes "blink" {
+@-o-keyframes blink {
   from,
   to {
     opacity: 0;
@@ -148,7 +149,7 @@ textarea.form-control {
   }
 }
 
-/* Custom CSS for audio indicator*/
+/* audio indicator*/
 #dot {
   height: 15px;
   width: 15px;

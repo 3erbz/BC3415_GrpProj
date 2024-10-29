@@ -22,7 +22,7 @@ def explore_result ():
 
         # checking if data is valid
         if text_data == "" and audio_data.filename == "" and speech_data == "":
-            flash ('Please provide either text, audio or speech data.', category='error')
+            flash ('Please provide either speech, text or audio data.', category='error')
             return redirect (url_for('explore_page.explore'))       
 
         # append data to dictionary

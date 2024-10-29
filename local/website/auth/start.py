@@ -40,7 +40,7 @@ def logout ():
     logout_user ()
     return redirect (url_for('auth_views.login'))
 
-@auth_views.route ('/sign-up/confirm', methods = ['GET', 'POST'])
+@auth_views.route ('/sign-up', methods = ['GET', 'POST'])
 def sign_up_confirm ():
     from website.models import User
     if request.method == 'POST':
@@ -69,11 +69,11 @@ def sign_up_confirm ():
             flash ('Account created', category='success')
             return redirect (url_for('auth_views.login'))
 
-    return render_template ("sign_up_confirm.html", user=current_user)
+    return render_template ("sign_up.html", user=current_user)
 
-@auth_views.route('/sign-up', methods=['GET','POST'])
-def sign_up():
-    return render_template("sign_up.html", user=current_user)
+# @auth_views.route('/sign-up', methods=['GET','POST'])
+# def sign_up():
+#     return render_template("sign_up.html", user=current_user)
 
 @ auth_views.route('/process', methods=['POST'])
 def process():
