@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 import speech_recognition as sr
 import textblob
@@ -18,7 +18,12 @@ def explore_result ():
         # receiving data
         text_data = request.form.get('text_data')
         speech_data = request.form.get ('speech_data')
-        audio_data = request.files ['audio_data']           
+        audio_data = request.files ['audio_data']    
+
+        # checking if data is valid
+        if text_data == "" and audio_data.filename == "" and speech_data == "":
+            flash ('Please provide either text, audio or speech data.', category='error')
+            return redirect (url_for('explore_page.explore'))       
 
         # append data to dictionary
         if text_data != "":
