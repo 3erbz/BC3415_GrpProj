@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 import torch
 from diffusers import StableDiffusionPipeline
-import time
+from werkzeug.utils import secure_filename
 
 auth_views = Blueprint ('auth_views', __name__, template_folder='website/templates')
 
@@ -14,7 +14,7 @@ def about ():
 
 @auth_views.route ('/login', methods = ['GET', 'POST'])
 def login ():
-    from website.models import User
+    from website.models import User, Image
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -32,8 +32,6 @@ def login ():
 
     return render_template ("login.html",user=current_user)
 
-# to be placed in the home page or under account settings
-# make sure that after the user logs in, there would only be 5 tabs to click on
 @auth_views.route ('/logout', methods = ['GET'])
 @login_required
 def logout ():
@@ -42,7 +40,7 @@ def logout ():
 
 @auth_views.route ('/sign-up', methods = ['GET', 'POST'])
 def sign_up_confirm ():
-    from website.models import User
+    from website.models import User, Profile
     if request.method == 'POST':
         email = request.form.get('email')
         first_name = request.form.get('firstName')
@@ -62,41 +60,41 @@ def sign_up_confirm ():
         elif len(password1) < 7:
             flash ('Password must be at least be 8 characters.', category='error')
         else:
+            # generate ai image for user
+            # stable diffusion model
+            print ("generating model...")
+            model_id = "Meina/MeinaMix_V11"
+            pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32, use_safetensors=True )
+            pipe.safety_checker = None
+            print ("generated model...")
+
+            # generate image from model
+            prompt = f"generate a profile picture for {first_name}, without any signs of visible text"
+
+            steps = 50
+            h = 240
+            w = 240
+
+            print ("generating image...")
+            image = pipe (prompt, height=h, width=w, number_of_inference_steps=steps).images [0]
+            print ("generated image...")    
+
+            filename = secure_filename(image.filename)
+            mimetype = image.mimetype
+
+            
+            img = Profile(img=image, mimetype=mimetype, name=filename)
+            print ("serialised image...")
+
             from website import db
             new_user = User (email=email, first_name=first_name, password=generate_password_hash(password1, method='pbkdf2:sha256'))
             db.session.add (new_user)
+            
+            db.session.add (img)
+            print ("added image to db...")
+
             db.session.commit ()
             flash ('Account created', category='success')
             return redirect (url_for('auth_views.login'))
 
     return render_template ("sign_up.html", user=current_user)
-
-# @auth_views.route('/sign-up', methods=['GET','POST'])
-# def sign_up():
-#     return render_template("sign_up.html", user=current_user)
-
-@ auth_views.route('/process', methods=['POST'])
-def process():
-    data = request.get_json()
-    firstName = data['firstName']
-
-    # stable diffusion model
-    model_id = "Meina/MeinaMix_V11"
-    pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32, use_safetensors=True )
-    pipe.safety_checker = None
-
-    # generate image from model
-    prompt = f"generate a profile picture for {firstName}, without any signs of visible text"
-
-    steps = 50
-    h = 240
-    w = 240
-
-    image = pipe (prompt, height=h, width=w, number_of_inference_steps=steps).images [0]
-
-    image.save("website/static/assets/output.png")
-
-    # simulate processing time
-    time.sleep(2) 
-
-    return "hello"
