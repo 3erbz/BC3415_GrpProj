@@ -99,6 +99,4 @@ def process():
     # simulate processing time
     time.sleep(2) 
 
-    # commit image to database
-    
-    return "success"
+    return "hello"

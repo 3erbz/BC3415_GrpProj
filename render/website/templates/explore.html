@@ -2,75 +2,61 @@
 content%}
 
 <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="{{url_for ('static',
+  filename='/styles/explore.css')}}"
+  />
 </head>
 
-<h1>explore page</h1>
+<br />
 
-<div class="form-floating">
-  <button class="btn btn-primary" id="start">Start Recording</button>
-  <button class="btn btn-danger" id="stop">Stop Recording</button>
+<div class="d-flex align-items-center justify-content-center">
+  <h1 class="glitch">
+    <span aria-hidden="true">IS THIS A SCAM?</span>
+    IS THIS A SCAM?
+    <span aria-hidden="true">IS THIS A SCAM?</span>
+  </h1>
 </div>
+
+<h3>Voice Recording</h3>
+<div>
+  <button class="btn btn-success" id="start">Start</button>
+  <button class="btn btn-danger" id="stop">Stop</button>
+  <span hidden class="align-middle" id="dot"></span>
+</div>
+
 <br />
 
 <form action="/explore/result" method="post" enctype="multipart/form-data">
-  <p class="fs-1" id="speech_shown"></p>
   <div class="mb-3">
-    <label for="text-data" class="form-label">Enter message here!</label>
     <textarea
-      style="resize: none"
       class="form-control"
-      name="text_data"
-      rows="5"
+      name="speech_data"
+      id="speech_data"
+      rows="4"
+      readonly
     ></textarea>
   </div>
-  <textarea
-    hidden
-    class="form-control"
-    name="speech_data"
-    id="speech_data"
-    rows="5"
-  ></textarea>
-  <div id="mb-3">
-    <label for="wav_data" class="form-label">Upload file here!</label>
-    <br />
+
+  <div class="mb-3">
+    <h3>Insert Text</h3>
+    <textarea class="form-control" name="text_data" rows="4"></textarea>
+  </div>
+
+  <div class="mb-3">
+    <h3>Audio File Upload</h3>
     <input type="file" name="audio_data" />
   </div>
-  <br />
-  <button type="submit" id="submitButton" class="btn btn-primary">
-    Submit
-  </button>
+  <div class="container text-center">
+    <button type="submit" id="submitButton" class="btn btn-primary">
+      Analyse
+    </button>
+  </div>
 </form>
 
-<script>
-  // record audio
-  const startButton = document.getElementById("start");
-  const stopButton = document.getElementById("stop");
-  const speech_result = document.getElementById("speech_shown");
-
-  const recognition = new webkitSpeechRecognition();
-  recognition.lang = window.navigator.language;
-  recognition.interimResults = true;
-
-  startButton.addEventListener("click", () => {
-    recognition.start();
-  });
-  stopButton.addEventListener("click", () => {
-    recognition.stop();
-  });
-
-  recognition.addEventListener("result", (event) => {
-    const result = event.results[event.results.length - 1][0].transcript;
-    speech_result.textContent = result;
-  });
-
-  // send data to python
-  var submitButton = document.getElementById("submitButton");
-  submitButton.addEventListener("click", sendData);
-  function sendData() {
-    const speech_data = document.getElementById("speech_data");
-    speech_data.innerHTML = speech_result.textContent;
-  }
-</script>
+<script src="{{url_for ('static',
+filename='/scripts/explore.js')}}"></script>
 
 {% endblock %}
