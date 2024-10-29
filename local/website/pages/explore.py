@@ -62,7 +62,8 @@ def explore_result ():
                 # Handle any errors in spam prediction
                 spam_results[data_type] = f"Error: {str(e)}"
 
-    print (data_received)
+    # scam detection using gemini
+    
     
     # Render the results in explore_result.html
     return render_template("explore_result.html", user=current_user,

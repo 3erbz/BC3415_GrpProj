@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 import speech_recognition as sr
 import textblob
+from website.pages.scam_detection import predict_scam
 
 explore_page= Blueprint ('explore_page', __name__, template_folder='/templates')
 
@@ -27,7 +28,7 @@ def explore_result ():
 
         # append data to dictionary
         if text_data != "":
-            data_received ["text"] = text_data
+            data_received ["Text"] = text_data
         
         if audio_data.filename != "":
             # convert audio to text
@@ -36,19 +37,36 @@ def explore_result ():
             with audioFile as source:
                 data = recognizer.record(source)
             audio_data = recognizer.recognize_google (data, key=None)
-            data_received ["audio"] = audio_data
+            data_received ["Audio"] = audio_data
             # maybe can use google genai, would require api key to be kept in environment
         
         if speech_data != "":
-            data_received ["speech"] = speech_data
+            data_received ["Speech"] = speech_data
         
-    # analysing data
+    # analysing data using textblob
     analysis_data = {}
     for data, content in data_received.items ():
         if content == None or content != "":
             analysis = textblob.TextBlob (content).sentiment
             analysis_data [data] = {"polarity": analysis.polarity, "subjectivity": analysis.subjectivity}
         
-    return render_template ("explore_result.html",user=current_user,
-                            data_received=data_received, 
-                            analysis_data=analysis_data)
+    # Spam Detection (using the trained model)
+    spam_results = {}
+    for data_type, content in data_received.items():
+        if content:
+            try:
+                # Predict whether the content is spam or not
+                result = predict_scam(content)
+                spam_results[data_type] = result
+            except Exception as e:
+                # Handle any errors in spam prediction
+                spam_results[data_type] = f"Error: {str(e)}"
+
+    # scam detection using gemini
+    
+    
+    # Render the results in explore_result.html
+    return render_template("explore_result.html", user=current_user,
+                           data_received=data_received,
+                           analysis_data=analysis_data,
+                           spam_results=spam_results)

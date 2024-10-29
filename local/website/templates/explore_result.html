@@ -13,20 +13,9 @@
     </div>
     <div class="card-body">
       <ul class="list-group list-group-flush">
-        {% if data_received ['Text'] != "" %}
-        <li class="list-group-item">
-          <strong>Text:</strong> {{ data_received['Text'] }}
-        </li>
-        {% endif %} {% if data_received ['Speech'] != "" %}
-        <li class="list-group-item">
-          <strong>Speech:</strong> {{ data_received['Speech'] }}
-        </li>
-        {% endif %} {% if data_received ['Audio'] != "" or data_received
-        ['Audio'] != None %}
-        <li class="list-group-item">
-          <strong>Audio Transcript:</strong> {{ data_received['Audio'] }}
-        </li>
-        {% endif %}
+        {% for key, value in data_received.items() %}
+        <li class="list-group-item"><strong>{{key}}:</strong> {{value}}</li>
+        {% endfor %}
       </ul>
     </div>
   </div>
