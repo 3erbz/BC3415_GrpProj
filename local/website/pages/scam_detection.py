@@ -1,19 +1,20 @@
 import pickle
-from sklearn.feature_extraction.text import CountVectorizer
 
 # Function to load the model
 def load_scam_model():
     try:
-        with open('/Users/shanelim/Desktop/Sem 3.1/BC3409/Project/AISpam/website/pages/pretrained_model/saved_models/best_scam_detection_model.pkl', 'rb') as file:
-            return pickle.load(file)
+        with open('website/pages/models/model.pkl', 'rb') as file:
+            model = pickle.load(file)
+            return model
     except FileNotFoundError:
         return None
 
 # Function to load the vectorizer
 def load_vectorizer():
     try:
-        with open('/Users/shanelim/Desktop/Sem 3.1/BC3409/Project/AISpam/website/pages/pretrained_model/saved_models/best_vectorizer.pkl', 'rb') as file:
-            return pickle.load(file)
+        with open('website/pages/models/vectorizer.pkl', 'rb') as file:
+            model = pickle.load(file)
+            return model
     except FileNotFoundError:
         return None
 
