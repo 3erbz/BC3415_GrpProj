@@ -57,6 +57,7 @@
         <thead>
           <tr>
             <th scope="col">Data Type</th>
+            <th scope="col">Model Used</th>
             <th scope="col">Detection Result</th>
           </tr>
         </thead>
@@ -64,7 +65,14 @@
           {% for data, result in spam_results.items() %}
           <tr>
             <td>{{ data }}</td>
-            <td>{{ result }}</td>
+            <td>{{ result["model"] }}</td>
+            <td>{{ result["result"] }}</td>
+          </tr>
+          {% endfor %} {% for data, result in gemini_results.items() %}
+          <tr>
+            <td>{{ data }}</td>
+            <td>{{ result["model"] }}</td>
+            <td>{{ result["result"] }}</td>
           </tr>
           {% endfor %}
         </tbody>

@@ -37,4 +37,51 @@ def predict_scam(content):
         return "Scam"
     elif prediction[0] == 'legitimate':
         return "Not Scam"
+    
+# Function to predict scam via the vectorizer
+def vectorizer_predict (data_received):
+    vectorizer_results = {}
+    for data_type, content in data_received.items():
+        if content:
+            try:
+                # Predict whether the content is spam or not
+                result = predict_scam(content)
+                vectorizer_results[data_type] = {"result": result, "model": "Count Vectorizer"}
+            except Exception as e:
+                # Handle any errors in spam prediction
+                vectorizer_results[data_type] = f"Error: {str(e)}"
+    return vectorizer_results
 
+# Function to predict content via textblob
+def texblob_predict (data_received):
+    import textblob
+
+    textblob_results = {}
+    for data_type, content in data_received.items ():
+        if content:
+            analysis = textblob.TextBlob(content).sentiment
+            textblob_results[data_type] = {"polarity": analysis.polarity, "subjectivity": analysis.subjectivity}
+
+    return textblob_results
+
+# Function to predict content via gemini
+def gemini_predict (data_received):
+    import google.generativeai as genai
+    # load genai model
+    api_key = "AIzaSyDD3fsLbkFRdP0UXhhJTjDOJ5XyHNMZyb0"
+    genai.configure (api_key=api_key)
+    model=genai.GenerativeModel ('gemini-1.5-flash')
+
+    # predict content
+    gemini_results = {}
+    for data_type, content in data_received.items():
+        if content:
+            try: 
+                prompt = content + "tell me if this is a scam, final output shoudl be Scam/Not Scam, regardless of the text input"
+                result = model.generate_content(prompt).text
+                gemini_results[data_type] = {"result": result, "model": "Gemini"}
+            except Exception as e:
+                # Handle any errors in spam prediction
+                gemini_results[data_type] = f"Error: {str(e)}"
+
+    return gemini_results

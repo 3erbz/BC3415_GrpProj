@@ -13,18 +13,12 @@ def explore ():
 @explore_page.route ('/explore/result', methods=['GET', 'POST'])
 @login_required
 def explore_result ():
-    data_received = {}       
+    data_received = {}    
+
     if request.method == 'POST':
         # import packages
-        import google.generativeai as genai
         import speech_recognition as sr
-        import textblob
-        from website.pages.scam_detection import predict_scam
-
-        # load genai model
-        api_key = "AIzaSyDD3fsLbkFRdP0UXhhJTjDOJ5XyHNMZyb0"
-        genai.configure (api_key=api_key)
-        model=genai.GenerativeModel ('gemini-1.5-flash')
+        from website.pages.scam_detection import vectorizer_predict, texblob_predict, gemini_predict
 
         # receiving data
         text_data = request.form.get('text_data')
@@ -54,30 +48,16 @@ def explore_result ():
             data_received ["Speech"] = speech_data
         
     # analysing data using textblob
-    analysis_data = {}
-    for data, content in data_received.items ():
-        if content:
-            analysis = textblob.TextBlob (content).sentiment
-            analysis_data [data] = {"polarity": analysis.polarity, "subjectivity": analysis.subjectivity}
+    analysis_data = texblob_predict(data_received)
         
     # Spam Detection (using the trained model)
-    spam_results = {}
-    for data_type, content in data_received.items():
-        if content:
-            try:
-                # Predict whether the content is spam or not
-                result = predict_scam(content)
-                spam_results[data_type] = result
-            except Exception as e:
-                # Handle any errors in spam prediction
-                spam_results[data_type] = f"Error: {str(e)}"
-
+    spam_results = vectorizer_predict (data_received)
     # scam detection using gemini
-    # gemini_results = {}
+    gemini_results = gemini_predict (data_received)
 
-    
     # Render the results in explore_result.html
     return render_template("explore_result.html", user=current_user,
                            data_received=data_received,
                            analysis_data=analysis_data,
-                           spam_results=spam_results)
+                           spam_results=spam_results,
+                           gemini_results=gemini_results)
