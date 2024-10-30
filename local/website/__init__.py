@@ -7,11 +7,14 @@ db = SQLAlchemy ()
 DB_NAME = "database.db"
 
 def create_app ():
+    UPLOAD_FOLDER = 'website/static/output'
+
     app = Flask(__name__)
     app.config ['SECRET_KEY'] = 'BC3415'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['UPLOAD FOLDER'] = UPLOAD_FOLDER
     db.init_app(app)
-    
+
     # import views from different apps
     from .auth.start import auth_views
     from .pages.home import home_page
