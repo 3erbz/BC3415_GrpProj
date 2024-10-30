@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+import os
 
 # database initialisation
 db = SQLAlchemy ()
@@ -9,7 +10,8 @@ DB_NAME = "database.db"
 def create_app ():
     app = Flask(__name__)
     app.config ['SECRET_KEY'] = 'BC3415'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    # app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATBASE_URL')
     db.init_app(app)
     
     # import views from different apps
