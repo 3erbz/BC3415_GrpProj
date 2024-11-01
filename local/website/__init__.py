@@ -17,7 +17,7 @@ def create_app ():
     from .pages.home import home_page
     from .pages.forum import forum_page
     from .pages.rewards import rewards_page
-    from .pages.explore import explore_page
+    from .pages.detector import detector_page
     from .pages.learning import learning_page
     from .pages.profile import profile_page
     from .pages.faq import faq_page
@@ -31,7 +31,7 @@ def create_app ():
     app.register_blueprint (home_page, url_prefix='/')
     app.register_blueprint (forum_page, url_prefix='/')
     app.register_blueprint (rewards_page, url_prefix='/')
-    app.register_blueprint (explore_page, url_prefix='/')
+    app.register_blueprint (detector_page, url_prefix='/')
     app.register_blueprint (learning_page, url_prefix='/')
     app.register_blueprint (profile_page, url_prefix='/')
     app.register_blueprint (faq_page, url_prefix='/')

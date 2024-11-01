@@ -3,16 +3,16 @@ from flask_login import login_required, current_user
 
 
 
-explore_page= Blueprint ('explore_page', __name__, template_folder='/templates')
+detector_page = Blueprint ('detector_page', __name__, template_folder='/templates')
 
-@explore_page.route ('/explore', methods = ['GET'])
+@detector_page.route ('/detector', methods = ['GET'])
 @login_required
-def explore ():
-    return render_template ("explore.html", user=current_user)
+def detector ():
+    return render_template ("detector.html", user=current_user)
 
-@explore_page.route ('/explore/result', methods=['GET', 'POST'])
+@detector_page.route ('/detector/result', methods=['GET', 'POST'])
 @login_required
-def explore_result ():
+def detector_result ():
     data_received = {}    
 
     if request.method == 'POST':
@@ -28,7 +28,7 @@ def explore_result ():
         # checking if data is valid
         if text_data == "" and audio_data.filename == "" and speech_data == "":
             flash ('Please provide either speech, text or audio data.', category='error')
-            return redirect (url_for('explore_page.explore'))       
+            return redirect (url_for('detector_page.detector'))       
 
         # append data to dictionary
         if text_data != "":
@@ -55,8 +55,8 @@ def explore_result ():
     # scam detection using gemini
     gemini_results = gemini_predict (data_received)
 
-    # Render the results in explore_result.html
-    return render_template("explore_result.html", user=current_user,
+    # Render the results in detector_result.html
+    return render_template("detector_result.html", user=current_user,
                            data_received=data_received,
                            analysis_data=analysis_data,
                            spam_results=spam_results,
