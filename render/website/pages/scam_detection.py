@@ -67,10 +67,8 @@ def texblob_predict (data_received):
 # Function to predict content via gemini
 def gemini_predict (data_received):
     import google.generativeai as genai
-    import os 
-    
     # load genai model
-    api_key = os.get_environ ('GEMINI_KEY')
+    api_key = "AIzaSyDD3fsLbkFRdP0UXhhJTjDOJ5XyHNMZyb0"
     genai.configure (api_key=api_key)
     model=genai.GenerativeModel ('gemini-1.5-flash')
 
