@@ -1,8 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
-
-
 detector_page = Blueprint ('detector_page', __name__, template_folder='/templates')
 
 @detector_page.route ('/detector', methods = ['GET'])

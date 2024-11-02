@@ -1,0 +1,66 @@
+{% extends "base/base.html" %} {% block title %} More {% endblock %} {% block
+content%}
+
+<div class="container">
+  <h1 class="fs-3 my-4">{{topic.id}}. {{topic.title}}</h1>
+  <p class="fs-6 my-4">{{topic.description}}</p>
+
+  {% for comment in comments%}
+
+  <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="d-flex text-muted pt-3">
+      <svg
+        class="bd-placeholder-img flex-shrink-0 me-2 rounded"
+        width="32"
+        height="32"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label="Placeholder: 32x32"
+        preserveAspectRatio="xMidYMid slice"
+        focusable="false"
+      >
+        <rect width="100%" height="100%" fill="#007bff"></rect>
+        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+      </svg>
+      <p class="pb-3 mb-0 small lh-sm border-bottom">
+        <strong class="d-block text-gray-dark"> @Anon {{comment.id}} </strong>
+        {{comment.comment}}
+      </p>
+    </div>
+  </div>
+
+  {% for reply in gemini_replies %} {% if reply.id == comment.id %}
+  <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="d-flex text-muted pt-3">
+      <svg
+        class="bd-placeholder-img flex-shrink-0 me-2 rounded"
+        width="32"
+        height="32"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label="Placeholder: 32x32"
+        preserveAspectRatio="xMidYMid slice"
+        focusable="false"
+      >
+        <rect width="100%" height="100%" fill="#e83e8c"></rect>
+        <text x="50%" y="50%" fill="#e83e8c" dy=".3em">32x32</text>
+      </svg>
+      <p class="pb-3 mb-0 small lh-sm border-bottom">
+        <strong class="d-block text-gray-dark"> @Gemini</strong>
+        {{reply.comment}}
+      </p>
+    </div>
+  </div>
+  {% endif %} {% endfor %} {% endfor %}
+
+  <h1 class="fs-3 my-4">Add a Comment</h1>
+  <form action="/forum/{{topic.id}}" method="POST">
+    <div class="form-group mb-3">
+      <h3 class="fs-4 my-2">Comment</h3>
+      <input type="text" class="form-control" name="comment" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+{% endblock %}

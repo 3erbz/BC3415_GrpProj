@@ -57,8 +57,6 @@ def sign_up ():
         elif len(password1) < 7:
             flash ('Password must be at least be 8 characters.', category='error')
         else:
-            
-
             from website import db
             new_user = User (email=email, first_name=first_name, password=generate_password_hash(password1, method='pbkdf2:sha256'))
             db.session.add (new_user)
@@ -67,29 +65,3 @@ def sign_up ():
             return redirect (url_for('auth_views.login'))
 
     return render_template ("sign_up.html", user=current_user)
-
-# # generate ai image for user
-# # stable diffusion model
-# print ("generating model...")
-# model_id = "Meina/MeinaMix_V11"
-# pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32, use_safetensors=True )
-# pipe.safety_checker = None
-# print ("generated model...")
-
-# # generate image from model
-# prompt = f"generate a profile picture for {first_name}, without any signs of visible text"
-
-# steps = 50
-# h = 240
-# w = 240
-
-# print ("generating image...")
-# image = pipe (prompt, height=h, width=w, number_of_inference_steps=steps).images [0]
-# print ("generated image...")    
-
-# filename = secure_filename(image.filename)
-# mimetype = image.mimetype
-
-
-# img = Profile(img=image, mimetype=mimetype, name=filename)
-# print ("serialised image...")
