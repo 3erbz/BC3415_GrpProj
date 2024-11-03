@@ -11,18 +11,27 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String (150))
 
 class Topic (db.Model):
+    title = db.Column(db.String(150), unique=True, nullable=False, primary_key=True)
+    description = db.Column(db.String)
+    thread = db.relationship('Thread')
+
+class Thread (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), unique=True, nullable=False)
     description = db.Column(db.String)
+    topic_title = db.Column(db.String, db.ForeignKey ('topic.title'))
+    comment = db.relationship ('Comment')
 
 class Comment (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column (db.String, unique=True, nullable=False)
-    topicID = db.Column(db.String)
+    thread_id = db.Column (db.Integer, db.ForeignKey('thread.id'))
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
     gemini_comment = db.relationship('GeminiComment')
 
 class GeminiComment (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column (db.String, unique=True, nullable=False)
-    topicID = db.Column(db.String)
+    thread_id = db.Column (db.Integer)
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
     comment_id = db.Column(db.Integer, db.ForeignKey ('comment.id'))

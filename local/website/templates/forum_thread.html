@@ -1,9 +1,9 @@
-{% extends "base/base.html" %} {% block title %} Forum {% endblock %} {% block
-content%}
+{% extends "base/base.html" %} {% block title %} {{topic.title}} {% endblock %}
+{% block content%}
 
 <div class="container">
-  <h1 class="fs-3 my-2">Add Topic</h1>
-  <form method="POST">
+  <h1 class="fs-3 my-2">Add Thread</h1>
+  <form action="/forum/{{topic.title}}" method="POST">
     <div class="form-group mb-3">
       <h3 class="fs-6 my-2">Title</h3>
       <input type="text" class="form-control" name="title" />
@@ -17,9 +17,9 @@ content%}
   </form>
 
   <div class="my-3 p-3 bg-body rounded shadow-sm">
-    <h6 class="border-bottom pb-2 mb-0">Browse Topics</h6>
+    <h6 class="border-bottom pb-2 mb-0">Browse {{topic.title}} Threads</h6>
 
-    {% for item in topics %}
+    {% for item in threads %}
     <div class="d-flex text-muted pt-3">
       <svg
         class="bd-placeholder-img flex-shrink-0 me-2 rounded"
@@ -37,7 +37,9 @@ content%}
 
       <p class="pb-3 mb-0 small lh-sm border-bottom">
         <strong class="d-block text-gray-dark">
-          <a href="/forum/{{item.title}}"> {{item.title}} </a></strong
+          <a href="/forum/{{topic.title}}/{{item.id}}">
+            {{item.title}}
+          </a></strong
         >
         {{item.description}}
       </p>

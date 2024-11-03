@@ -1,9 +1,9 @@
-{% extends "base/base.html" %} {% block title %} More {% endblock %} {% block
-content%}
+{% extends "base/base.html" %} {% block title %} {{topic.title.title()}}
+Discussion {% endblock %} {% block content%}
 
 <div class="container">
-  <h1 class="fs-3 my-4">{{topic.id}}. {{topic.title}}</h1>
-  <p class="fs-6 my-4">{{topic.description}}</p>
+  <h1 class="fs-3 my-4">{{thread.id}}. {{thread.title}}</h1>
+  <p class="fs-6 my-4">{{thread.description}}</p>
 
   {% for comment in comments%}
 
@@ -47,16 +47,15 @@ content%}
       </svg>
       <p class="pb-3 mb-0 small lh-sm border-bottom">
         <strong class="d-block text-gray-dark"> @Gemini</strong>
-        {{reply.comment}}
+        {{reply.comment}} {{reply.date}}
       </p>
     </div>
   </div>
   {% endif %} {% endfor %} {% endfor %}
 
-  <h1 class="fs-3 my-4">Add a Comment</h1>
-  <form action="/forum/{{topic.id}}" method="POST">
+  <form action="/forum/{{topic.title}}/{{thread.id}}" method="POST">
     <div class="form-group mb-3">
-      <h3 class="fs-4 my-2">Comment</h3>
+      <h3 class="fs-5 my-2">Add your comment</h3>
       <input type="text" class="form-control" name="comment" />
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
