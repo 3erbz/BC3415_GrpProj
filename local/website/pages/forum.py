@@ -38,7 +38,7 @@ def thread (title):
     threads = Thread.query.filter_by (topic_title=title).all ()
 
     # retrieve topic
-    topic = db.get_or_404 (Topic, title)
+    topic = Topic.query.get(title)
 
     return render_template ("forum_thread.html", user=current_user, threads=threads, topic=topic)
 
@@ -58,16 +58,17 @@ def comment (title, id):
         db.session.commit ()
 
     # retrieve topic
-    topic = db.get_or_404 (Topic, title)
+    topic = Topic.query.get(title)
     
     # retrieve thread
-    thread = db.get_or_404 (Thread, id)
+    thread = Thread.query.get(id)
 
     # retrieve comments
     comments = Comment.query.filter_by (thread_id=id).all ()
+    print (f'comments: {comments}')
 
     # retrieve gemini replies
     gemini_replies  = GeminiComment.query.filter_by (thread_id=id).all ()
-    print (gemini_replies)
+    print (f'gemini replies: {gemini_replies}')
 
     return render_template ("forum_comment.html", user=current_user, topic=topic, thread=thread, comments=comments, gemini_replies=gemini_replies)
