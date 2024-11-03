@@ -22,9 +22,12 @@ Discussion {% endblock %} {% block content%}
         <rect width="100%" height="100%" fill="#007bff"></rect>
         <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
       </svg>
-      <p class="pb-3 mb-0 small lh-sm border-bottom">
+      <p class="pb-2 mb-0 small lh-sm border-bottom">
         <strong class="d-block text-gray-dark"> @Anon {{comment.id}} </strong>
         {{comment.comment}}
+        <strong class="d-block text-gray-dark my-2">
+          Posted on {{comment.date}}
+        </strong>
       </p>
     </div>
   </div>
@@ -45,9 +48,12 @@ Discussion {% endblock %} {% block content%}
         <rect width="100%" height="100%" fill="#e83e8c"></rect>
         <text x="50%" y="50%" fill="#e83e8c" dy=".3em">32x32</text>
       </svg>
-      <p class="pb-3 mb-0 small lh-sm border-bottom">
+      <p class="pb-2 mb-0 small lh-sm border-bottom">
         <strong class="d-block text-gray-dark"> @Gemini</strong>
-        {{reply.comment}} {{reply.date}}
+        {{reply.comment}}
+        <strong class="d-block text-gray-dark my-2">
+          Generated on {{reply.date}}</strong
+        >
       </p>
     </div>
   </div>

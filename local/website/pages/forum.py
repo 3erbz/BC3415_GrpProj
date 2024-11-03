@@ -65,10 +65,8 @@ def comment (title, id):
 
     # retrieve comments
     comments = Comment.query.filter_by (thread_id=id).all ()
-    print (f'comments: {comments}')
 
     # retrieve gemini replies
     gemini_replies  = GeminiComment.query.filter_by (thread_id=id).all ()
-    print (f'gemini replies: {gemini_replies}')
 
     return render_template ("forum_comment.html", user=current_user, topic=topic, thread=thread, comments=comments, gemini_replies=gemini_replies)

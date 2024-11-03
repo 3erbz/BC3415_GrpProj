@@ -1,7 +1,13 @@
 def gemini_reply (comment):
     import google.generativeai as genai
+    from dotenv import load_dotenv
+    from pathlib import Path
+    import os   
 
-    genai.configure(api_key="AIzaSyDD3fsLbkFRdP0UXhhJTjDOJ5XyHNMZyb0")
+    env_path = Path('.')/'.env'
+    load_dotenv (dotenv_path=env_path)
+    api_key = os.environ.get('GEMINI_API_KEY')
+    genai.configure(api_key=api_key)
 
     # Create the model
     generation_config = {
