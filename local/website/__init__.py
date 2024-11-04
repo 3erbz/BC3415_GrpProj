@@ -22,11 +22,6 @@ def create_app ():
     from .pages.profile import profile_page
     from .pages.faq import faq_page
 
-    # redirecting the user for when they are not logged in to their account
-    login_manager = LoginManager()
-    login_manager.login_view = 'auth_views.login'
-    login_manager.init_app(app)
-
     app.register_blueprint (auth_views, url_prefix='/')
     app.register_blueprint (home_page, url_prefix='/')
     app.register_blueprint (forum_page, url_prefix='/')
@@ -41,10 +36,13 @@ def create_app ():
     with app.app_context():
         db.create_all()
 
+    # redirecting the user for when they are not logged in to their account
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth_views.login'
+    login_manager.init_app(app)
+
     @login_manager.user_loader
     def load_user (id):
         return User.query.get (int(id))
 
     return app
-
-    

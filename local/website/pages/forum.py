@@ -50,9 +50,9 @@ def thread (title):
 
     return render_template ("forum_thread.html", user=current_user, threads=threads, topic=topic)
 
-@forum_page.route ('/forum/<title>/<int:id>', methods = ['GET', 'POST'])
+@forum_page.route ('/forum/<title>/<int:thread_id>', methods = ['GET', 'POST'])
 @login_required
-def comment (title, id):
+def comment (title, thread_id):
     # adding new topic to database
     if request.method == 'POST':
         
@@ -61,13 +61,14 @@ def comment (title, id):
         if comment == "":
             flash ('Comment is empty.', category='error')
         else: 
-            comment = Comment (comment=comment, thread_id=id)
+            comment = Comment (comment=comment, thread_id=thread_id)
             db.session.add (comment)
             db.session.commit ()
 
             # gemini's reply
-            reply = comment_reply (request.form['comment'])
-            gemini_comment = GeminiComment (comment=reply, comment_id=comment.id, thread_id=id)
+            response = comment_reply (request.form['comment'], thread_id)
+
+            gemini_comment = GeminiComment (response=response, comment_id=comment.id, thread_id=thread_id)
             db.session.add (gemini_comment)
             db.session.commit ()
 
@@ -75,12 +76,17 @@ def comment (title, id):
     topic = Topic.query.get(title)
     
     # retrieve thread
-    thread = Thread.query.get(id)
+    thread = Thread.query.get(thread_id)
 
     # retrieve comments
-    comments = Comment.query.filter_by (thread_id=id).all ()
+    comments = Comment.query.filter_by (thread_id=thread_id).all ()
 
     # retrieve gemini replies
-    gemini_replies  = GeminiComment.query.filter_by (thread_id=id).all ()
+    gemini_replies  = GeminiComment.query.filter_by (thread_id=thread_id).all ()
 
-    return render_template ("forum_comment.html", user=current_user, topic=topic, thread=thread, comments=comments, gemini_replies=gemini_replies)
+    return render_template ("forum_comment.html", 
+                            user=current_user, 
+                            topic=topic, 
+                            thread=thread, 
+                            comments=comments, 
+                            gemini_replies=gemini_replies)

@@ -53,8 +53,8 @@ Discussion {% endblock %} {% block content%}
         <text x="50%" y="50%" fill="#e83e8c" dy=".3em">32x32</text>
       </svg>
       <p class="pb-2 mb-0 small lh-sm border-bottom">
-        <strong class="d-block text-gray-dark"> @Gemini</strong>
-        {{reply.comment}}
+        <strong class="d-block text-gray-dark"> @ScamMi</strong>
+        {{reply.response}}
         <strong class="d-block text-gray-dark my-2">
           Generated on {{reply.date.strftime ("%d-%m-%Y %H:%M:%S")}}</strong
         >
@@ -68,13 +68,14 @@ Discussion {% endblock %} {% block content%}
       <h3 class="fs-5 my-2">Add your comment</h3>
       <input id="comment" type="text" class="form-control" name="comment" />
     </div>
-    <button
-      id="submit"
-      type="submit"
-      class="btn btn-primary"
-      onclick="scrollToComment ()"
-    >
-      Submit
+    <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+  <br />
+
+  <form action="/forum/{{topic.title}}">
+    <button type="submit" class="btn btn-primary">
+      Back to {{topic.title}}
     </button>
   </form>
 </div>

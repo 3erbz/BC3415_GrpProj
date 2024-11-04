@@ -32,14 +32,14 @@ class Thread (db.Model):
 
 class Comment (db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    comment = db.Column (db.String, unique=True, nullable=False)
+    comment = db.Column (db.String, nullable=False)
     thread_id = db.Column (db.Integer, db.ForeignKey('thread.id'))
     date = db.Column(db.DateTime, default=datetime.now)
     gemini_comment = db.relationship('GeminiComment')
 
 class GeminiComment (db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    comment = db.Column (db.String, unique=True, nullable=False)
+    response = db.Column (db.String, nullable=False)
     thread_id = db.Column (db.Integer)
     date = db.Column(db.DateTime, default=datetime.now)
     comment_id = db.Column(db.Integer, db.ForeignKey ('comment.id'))

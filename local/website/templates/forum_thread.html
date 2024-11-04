@@ -1,8 +1,20 @@
 {% extends "base/base.html" %} {% block title %} {{topic.title}} {% endblock %}
 {% block content%}
 
+<head>
+  <style>
+    p {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+
+<br />
+
 <div class="container">
-  <h1 class="fs-3 my-2">Add Thread</h1>
+  <h1 class="fs-3">Add Thread</h1>
   <form action="/forum/{{topic.title}}" method="POST">
     <div class="form-group mb-3">
       <h3 class="fs-6 my-2">Title</h3>
@@ -46,6 +58,10 @@
     </div>
     {% endfor %}
   </div>
+
+  <form action="/forum">
+    <button type="submit" class="btn btn-primary">Back to Forum</button>
+  </form>
 </div>
 
 {% endblock %}
