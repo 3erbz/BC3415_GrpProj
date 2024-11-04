@@ -8,11 +8,16 @@ content%}
     rel="stylesheet"
     href="{{url_for ('static', filename='/styles/profile.css')}}"
   />
+  <style>
+    .table-wrapper {
+      max-height: 200px;
+      overflow: auto;
+      display: inline-block;
+      width: 100%;
+    }
+  </style>
 </head>
 
-<br />
-<br />
-<br />
 <body>
   <div class="profile-container">
     <!-- Profile Image (TO ADD IN SHANE'S AVATAR CREATOR) -->
@@ -29,8 +34,8 @@ content%}
       <h1 class="profile-name">{{ user.first_name }}</h1>
       <span class="status">Active</span>
 
-      <p class="scams-identified">Scams Identified: 3415</p>
-      <p class="join-date">Joined Since 14 February 2024</p>
+      <p class="scams-identified">Scams Identified: {{scams}}</p>
+      <p class="join-date">Protecting Since 14 February 2024</p>
 
       <div class="stats">
         <div class="stat">
@@ -39,19 +44,34 @@ content%}
         </div>
         <div class="stat">
           <label>Videos Completed</label>
-          <input type="text" value="20" readonly />
+          <input type="text" value="3" readonly />
         </div>
       </div>
 
-      <a id="forum" href="/forum" class="forum-button">Go to Forum</a>
-
       <!-- Profile Description with Dropdown -->
       <div class="profile-description">
-        <span class="profile-description-title" onclick="toggleDescription()">
-          Profile Description <span class="arrow"></span>
-        </span>
-        <p class="description-content">Got scammed twice in my life</p>
+        <div class="table-wrapper">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Date Posted</th>
+                <th scope="col">Summary</th>
+                <th scope="col">Data Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for data in scam_data %}
+              <tr>
+                <td>{{ data.date.strftime ("%d-%m-%Y %H:%M:%S") }}</td>
+                <td><span class="summary">{{ data.summary }}</span></td>
+                <td>{{ data.type }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
+      <a id="forum" href="/forum" class="forum-button">Go to Forum</a>
     </div>
   </div>
 </body>

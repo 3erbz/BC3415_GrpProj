@@ -14,6 +14,7 @@ def detector ():
 def detector_result (): 
     # import packages
     from website.models import Scams, db
+    from website.pages.gemini_functions import summarise
 
     # current user id
     user_id = current_user.id
@@ -37,8 +38,11 @@ def detector_result ():
 
         # append data to dictionary and add to db
         if text_data != "":
+            # data summary
+            summary = summarise (text_data)
+
             # add to db
-            data = Scams (content=text_data, type="text", user_id=user_id)
+            data = Scams (content=text_data, type="Text", user_id=user_id, summary=summary)
             db.session.add(data) 
             db.session.commit()
 
@@ -51,18 +55,23 @@ def detector_result ():
             with audioFile as source:
                 data = recognizer.record(source)
             audio_data = recognizer.recognize_google (data, key=None)
-            print (audio_data)
+
+            # data summary
+            summary = summarise (audio_data)
 
             # add data tp db
-            data = Scams (content=audio_data, type="audio", user_id=user_id)
+            data = Scams (content=audio_data, type="Audio", user_id=user_id, summary=summary)
             db.session.add(data) 
             db.session.commit()
 
             data_received ["Audio"] = audio_data
         
         if speech_data != "":
+            # data summary
+            summary = summarise (speech_data)
+
             # add data to db
-            data = Scams (content=speech_data, type="speech", user_id=user_id)
+            data = Scams (content=speech_data, type="Speech", user_id=user_id, summary=summary)
             db.session.add(data) 
             db.session.commit()
 

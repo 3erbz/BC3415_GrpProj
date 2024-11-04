@@ -10,12 +10,25 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String (150))
     first_name = db.Column(db.String (150))
     scam = db.relationship('Scams')
+    user = db.relationship('FAQ')
+    chatbot = db.relationship('Chatbot')
 
 class Scams (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String, nullable=False)
     type = db.Column(db.String, nullable=False)
+    summary = db.Column(db.String, nullable=False)
     date = db.Column(db.DateTime, default=datetime.now)
+    user_id = db.Column(db.String, db.ForeignKey ('user.id'))
+
+class FAQ (db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_response = db.Column (db.String, nullable=False)
+    user_id = db.Column(db.String, db.ForeignKey ('user.id'))
+
+class Chatbot (db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    chatbot_response = db.Column (db.String, nullable=False)
     user_id = db.Column(db.String, db.ForeignKey ('user.id'))
 
 class Topic (db.Model):

@@ -1,8 +1,10 @@
-def chatbot_reply (question):
+def chatbot_reply (question, user_id):
     import google.generativeai as genai
     from dotenv import load_dotenv
     from pathlib import Path
     import os   
+    from website.models import FAQ, Chatbot
+    from website import db
 
     env_path = Path('.')/'.env'
     load_dotenv (dotenv_path=env_path)
@@ -10,7 +12,11 @@ def chatbot_reply (question):
     genai.configure(api_key=api_key)
 
     # Set up chat session with initial history
-    genai.configure(api_key=api_key)
+    history = []
+    # faq = FAQ.query.filter_by (user_id=user_id).all()
+    # for item in faq:
+    #     print (item.user_response)
+
 
     # Create the model
     generation_config = {
@@ -28,12 +34,23 @@ def chatbot_reply (question):
     )
 
     chat_session = model.start_chat(
-    history=[]
+    history=history
     )
 
     response = chat_session.send_message(question)
+    response = response.text
 
-    return response.text
+    # send user response to datbase
+    user_question = FAQ(user_response=question)
+    db.session.add(user_question)
+    db.session.commit()
+
+    # send chatbot response to datbase
+    chatbot = Chatbot(chatbot_response=response)
+    db.session.add(chatbot)
+    db.session.commit()
+
+    return response
 
 def comment_reply (comment, thread_id):
     from website.models import Comment, GeminiComment
@@ -81,6 +98,25 @@ def comment_reply (comment, thread_id):
     )
 
     response = chat_session.send_message(comment)
+    response = response.text
+
+    return response
+
+def summarise (data):
+    import google.generativeai as genai
+    from dotenv import load_dotenv
+    from pathlib import Path
+    import os   
+
+    env_path = Path('.')/'.env'
+    load_dotenv (dotenv_path=env_path)
+    api_key = os.environ.get('GEMINI_API_KEY')
+    genai.configure(api_key=api_key)
+
+    # Create the model
+    model = genai.GenerativeModel ("gemini-1.5-pro-002")
+    prompt = "Categorise the gist in less than 5 words without any indication of whether it is a scam or not: " + data
+    response = model.generate_content (prompt)
     response = response.text
 
     return response

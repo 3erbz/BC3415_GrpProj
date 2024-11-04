@@ -11,6 +11,7 @@ def faq ():
 @faq_page.route ('/faq/ask', methods = ['POST'])
 @login_required
 def ask ():
+    user = current_user.id
     user_input = request.json.get('question')
-    response = chatbot_reply (user_input)
+    response = chatbot_reply (user_input, user)
     return jsonify({"response": response})
