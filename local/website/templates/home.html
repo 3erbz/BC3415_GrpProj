@@ -42,7 +42,7 @@ content%}
 
     <p class="fs-3">Number of scams prevented:</p>
 
-    <p id="total_scam"></p>
+    <p id="total_scam">{{scams}}</p>
   </div>
 
   <div class="container">
@@ -92,17 +92,5 @@ content%}
     </div>
   </div>
 </body>
-
-<script>
-  let yValues = [55, 49, 30, 20, 12];
-
-  let total_scam = 0;
-
-  for (let i = 0; i < yValues.length; i++) {
-    total_scam += yValues[i];
-  }
-
-  document.getElementById("total_scam").innerHTML = total_scam;
-</script>
 
 {% endblock %}

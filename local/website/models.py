@@ -9,6 +9,13 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String (150), unique=True)
     password = db.Column(db.String (150))
     first_name = db.Column(db.String (150))
+    scam = db.relationship('Scams')
+
+class Scams (db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String, nullable=False)
+    type = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.String, db.ForeignKey ('user.id'))
 
 class Topic (db.Model):
     title = db.Column(db.String(150), unique=True, nullable=False, primary_key=True)

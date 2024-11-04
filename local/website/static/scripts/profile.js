@@ -1,18 +1,23 @@
-function generateImage() {
-  const firstName = document.getElementById("firstName").innerHTML;
-  console.log(firstName + " was sent");
-  $.ajax({
-    url: "/generate-image",
-    type: "POST",
-    contentType: "application/json",
-    data: JSON.stringify({ firstName: firstName }),
-    success: function (response) {
-      console.log(response);
-      const img = document.getElementById("img");
-      img.src = `data:image/jpeg;base64,${response["img"]}`;
-    },
-    error: function (error) {
-      console.log(error);
-    },
-  });
+// Toggle the display of the profile description
+function toggleDescription() {
+  const descriptionContent = document.querySelector(".description-content");
+  const arrow = document.querySelector(".arrow");
+
+  if (
+    descriptionContent.style.display === "none" ||
+    descriptionContent.style.display === ""
+  ) {
+    descriptionContent.style.display = "block";
+    arrow.classList.add("up"); // Add up class for upward arrow
+  } else {
+    descriptionContent.style.display = "none";
+    arrow.classList.remove("up"); // Remove up class for downward arrow
+  }
 }
+
+// Ensure the description is hidden on page load
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelector(".description-content").style.display = "none";
+});
+
+// time lag for image generation

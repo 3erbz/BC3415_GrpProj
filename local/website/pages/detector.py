@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
+
 detector_page = Blueprint ('detector_page', __name__, template_folder='/templates')
 
 @detector_page.route ('/detector', methods = ['GET'])
@@ -10,7 +11,13 @@ def detector ():
 
 @detector_page.route ('/detector/result', methods=['GET', 'POST'])
 @login_required
-def detector_result ():
+def detector_result (): 
+    # import packages
+    from website.models import Scams, db
+
+    # current user id
+    user_id = current_user.id
+
     data_received = {}    
 
     if request.method == 'POST':
@@ -28,8 +35,13 @@ def detector_result ():
             flash ('Please provide either speech, text or audio data.', category='error')
             return redirect (url_for('detector_page.detector'))       
 
-        # append data to dictionary
+        # append data to dictionary and add to db
         if text_data != "":
+            # add to db
+            data = Scams (content=text_data, type="text", user_id=user_id)
+            db.session.add(data) 
+            db.session.commit()
+
             data_received ["Text"] = text_data
         
         if audio_data.filename != "":
@@ -39,10 +51,21 @@ def detector_result ():
             with audioFile as source:
                 data = recognizer.record(source)
             audio_data = recognizer.recognize_google (data, key=None)
+            print (audio_data)
+
+            # add data tp db
+            data = Scams (content=audio_data, type="audio", user_id=user_id)
+            db.session.add(data) 
+            db.session.commit()
+
             data_received ["Audio"] = audio_data
-            # maybe can use google genai, would require api key to be kept in environment
         
         if speech_data != "":
+            # add data to db
+            data = Scams (content=speech_data, type="speech", user_id=user_id)
+            db.session.add(data) 
+            db.session.commit()
+
             data_received ["Speech"] = speech_data
         
     # analysing data using textblob

@@ -1,14 +1,22 @@
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 import requests
+from website.models import Scams
 
 home_page = Blueprint ('home_page', __name__, template_folder='/templates')
 
 @home_page.route ('/', methods = ['GET'])
 @login_required
-def news ():
-    api_key = "cc3747f4309f44bb9cc0c5d2bbd336df"
-    # would need to uplpad api key to render 
+def home ():
+    # newspage
+    from dotenv import load_dotenv
+    from pathlib import Path
+    import os
+
+    env_path = Path('.')/'.env'
+    load_dotenv (dotenv_path=env_path)
+    api_key = os.environ.get('NEWS_API_KEY')
+
     url = f"https://newsapi.org/v2/everything?q=scam&apiKey={api_key}"
     response = requests.get (url)
 
@@ -33,4 +41,8 @@ def news ():
                     if count == 6:
                         break
 
-    return render_template ("home.html", user=current_user, title=article_title, description=article_description, url=article_url, img=img_url)
+    # number of scams prevented
+    user_id = current_user.id
+    scams = Scams.query.filter_by (user_id=user_id).count ()
+
+    return render_template ("home.html", user=current_user, title=article_title, description=article_description, url=article_url, img=img_url, scams=scams)

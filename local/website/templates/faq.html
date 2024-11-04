@@ -1,6 +1,97 @@
 {% extends "base/base.html" %} {% block title %} FAQ {% endblock %} {% block
 content%}
 
-<h1>faq page</h1>
+<head>
+  <!-- Include Marked.js for Markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<div class="container">
+  <h1 class="text-center mt-4">Talk to Scammie</h1>
+
+  <!-- Chat area -->
+  <div class="chat-area my-5" id="chat-box">
+    <!-- Bot's Initial Message -->
+    <div class="d-flex justify-content-start align-items-center mb-3">
+      <img
+        src="{{ url_for('static', filename='assets/meilleur-chatbot.jpg') }}"
+        class="rounded-circle bot-avatar mr-2"
+        alt="Bot Avatar"
+        style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px"
+      />
+      <div
+        class="border-left pl-3 bot-message"
+        style="border-color: black; border-width: 3px"
+      >
+        <p
+          class="chat-bubble bg-light text-dark border p-2 rounded"
+          style="border-color: #ddd"
+        >
+          Hi {{ user.first_name }}, you have come to the correct place. Feel
+          free to ask me any questions you might have regarding scams.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input area at the bottom -->
+  <div class="input-group fixed-bottom p-3 bg-white border-top">
+    <input
+      type="text"
+      id="user-input"
+      class="form-control"
+      placeholder="Type your question here"
+    />
+    <div class="input-group-append">
+      <button onclick="askQuestion()" class="btn btn-primary">Send</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function askQuestion() {
+    const question = document.getElementById("user-input").value;
+    document.getElementById("user-input").value = "";
+    if (!question.trim()) return;
+
+    // Display user message in chat area
+    document.getElementById("chat-box").innerHTML += `
+            <div class="d-flex justify-content-end align-items-center mb-3">
+                <div class="user-message">
+                    <p class="chat-bubble bg-secondary text-white border p-2 rounded" style="border-color: #ddd;">${question}</p>
+                </div>
+                <img src="{{ url_for('static', filename='avatars/user_2_avatar.svg') }}" class="rounded-circle ml-2 user-avatar" alt="User Avatar" style="width: 40px; height: 40px; object-fit: cover; margin-left: 10px;">
+            </div>`;
+
+    // Send question to backend and get response
+    fetch("/faq/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ question }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Display formatted bot response using Markdown
+        const formattedResponse = marked.parse(data.response);
+
+        // get current time
+        const today = new Date(Date.now()).toLocaleString();
+
+        document.getElementById("chat-box").innerHTML += `
+              <div class="d-flex justify-content-start align-items-center mb-3">
+                  <img src="{{ url_for('static', filename='assets/meilleur-chatbot.jpg') }}" class="rounded-circle bot-avatar mr-2" alt="Bot Avatar" style="width: 40px; height: 40px; object-fit: cover; margin-right:10px;">
+                  <div class="border-left pl-3 bot-message" style="border-color: black; border-width: 3px;">
+                      <div class="chat-bubble bg-light text-dark border p-2 rounded" style="border-color: #ddd;">${formattedResponse} <strong> Generated on ${today}</strong></div>
+                  </div>
+              </div>`;
+
+        // Clear input field and scroll to the latest message
+        document.getElementById("chat-box").scrollTop =
+          document.getElementById("chat-box").scrollHeight;
+      });
+  }
+</script>
 
 {% endblock %}

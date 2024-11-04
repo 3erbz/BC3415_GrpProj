@@ -2,17 +2,60 @@
 content%}
 
 <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="{{url_for ('static', filename='/scripts/profile.js')}}"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    rel="stylesheet"
+    href="{{url_for ('static', filename='/styles/profile.css')}}"
+  />
 </head>
-<h1>this is the profile page</h1>
 
-<div class="container" id="firstName">{{user.first_name}}</div>
+<br />
+<br />
+<br />
+<body>
+  <div class="profile-container">
+    <!-- Profile Image (TO ADD IN SHANE'S AVATAR CREATOR) -->
+    <div class="profile-image">
+      <img
+        src="{{ url_for('static', filename='images/vidgen_mar.svg') }}"
+        alt="Profile Image"
+      />
+      <!-- Replace with actual image path -->
+    </div>
 
-<button type="button" class="btn btn-primary" onclick="generateImage()">
-  Generate Image
-</button>
+    <!-- Profile Details -->
+    <div class="profile-details">
+      <h1 class="profile-name">{{ user.first_name }}</h1>
+      <span class="status">Active</span>
 
-<img src="" id="img" />
+      <p class="scams-identified">Scams Identified: 3415</p>
+      <p class="join-date">Joined Since 14 February 2024</p>
+
+      <div class="stats">
+        <div class="stat">
+          <label>Audio Files Uploaded</label>
+          <input type="text" value="155" readonly />
+        </div>
+        <div class="stat">
+          <label>Videos Completed</label>
+          <input type="text" value="20" readonly />
+        </div>
+      </div>
+
+      <a id="forum" href="/forum" class="forum-button">Go to Forum</a>
+
+      <!-- Profile Description with Dropdown -->
+      <div class="profile-description">
+        <span class="profile-description-title" onclick="toggleDescription()">
+          Profile Description <span class="arrow"></span>
+        </span>
+        <p class="description-content">Got scammed twice in my life</p>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script src="{{url_for ('static', filename='/scripts/profile.js')}}"></script>
 
 {% endblock %}

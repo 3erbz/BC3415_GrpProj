@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request
 from flask_login import login_required, current_user
 from website.models import Topic, Thread, Comment, GeminiComment
 from website import db
-from website.pages.gemini_reply import gemini_reply
+from website.pages.gemini_functions import comment_reply
 
 forum_page = Blueprint ('forum_page', __name__, template_folder='/templates')
 
@@ -52,7 +52,7 @@ def comment (title, id):
         db.session.commit ()
 
         # gemini's reply
-        reply = gemini_reply (request.form['comment'])
+        reply = comment_reply (request.form['comment'])
         gemini_comment = GeminiComment (comment=reply, comment_id=comment.id, thread_id=id)
         db.session.add (gemini_comment)
         db.session.commit ()

@@ -1,6 +1,10 @@
 {% extends "base/base.html" %} {% block title %} {{topic.title.title()}}
 Discussion {% endblock %} {% block content%}
 
+<head>
+  <script src="{{url_for ('static', filename='/scripts/forum-comment.js')}}"></script>
+</head>
+
 <div class="container">
   <h1 class="fs-3 my-4">{{thread.title}}</h1>
   <p class="fs-6 my-4">{{thread.description}}</p>
@@ -62,9 +66,16 @@ Discussion {% endblock %} {% block content%}
   <form action="/forum/{{topic.title}}/{{thread.id}}" method="POST">
     <div class="form-group mb-3">
       <h3 class="fs-5 my-2">Add your comment</h3>
-      <input type="text" class="form-control" name="comment" />
+      <input id="comment" type="text" class="form-control" name="comment" />
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button
+      id="submit"
+      type="submit"
+      class="btn btn-primary"
+      onclick="scrollToComment ()"
+    >
+      Submit
+    </button>
   </form>
 </div>
 
