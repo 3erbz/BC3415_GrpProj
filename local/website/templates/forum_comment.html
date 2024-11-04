@@ -30,7 +30,7 @@ Discussion {% endblock %} {% block content%}
         <strong class="d-block text-gray-dark"> @Anon {{comment.id}} </strong>
         {{comment.comment}}
         <strong class="d-block text-gray-dark my-2">
-          Posted on {{comment.date}}
+          Posted on {{comment.date.strftime ("%d-%m-%Y %H:%M:%S")}}
         </strong>
       </p>
     </div>
@@ -56,7 +56,7 @@ Discussion {% endblock %} {% block content%}
         <strong class="d-block text-gray-dark"> @Gemini</strong>
         {{reply.comment}}
         <strong class="d-block text-gray-dark my-2">
-          Generated on {{reply.date}}</strong
+          Generated on {{reply.date.strftime ("%d-%m-%Y %H:%M:%S")}}</strong
         >
       </p>
     </div>

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, flash
 from flask_login import login_required, current_user
 from website.models import Topic, Thread, Comment, GeminiComment
 from website import db
@@ -14,9 +14,12 @@ def topic ():
     if request.method == 'POST':
         title = request.form.get('title')
         description = request.form.get('description')
-        topic =  Topic(title = title, description = description)
-        db.session.add (topic)
-        db.session.commit ()
+        if title == "" or description == "":
+            flash ('Title or description is empty.', category='error')
+        else: 
+            topic =  Topic(title = title, description = description)
+            db.session.add (topic)
+            db.session.commit ()
 
     # retrieve topics
     topics = db.session.execute (db.select(Topic)).scalars ()
@@ -30,9 +33,14 @@ def thread (title):
     if request.method == 'POST':
         thread_title = request.form.get('title')
         thread_description = request.form.get('description')
-        threads = Thread (title = thread_title, description = thread_description, topic_title=title)
-        db.session.add (threads)
-        db.session.commit ()
+
+        if thread_title == "" or thread_description == "":
+            flash ('Title or description is empty.', category='error')
+
+        else:
+            threads = Thread (title = thread_title, description = thread_description, topic_title=title)
+            db.session.add (threads)
+            db.session.commit ()
 
     # retrieve comments
     threads = Thread.query.filter_by (topic_title=title).all ()
@@ -47,15 +55,21 @@ def thread (title):
 def comment (title, id):
     # adding new topic to database
     if request.method == 'POST':
-        comment = Comment (comment = request.form['comment'], thread_id=id)
-        db.session.add (comment)
-        db.session.commit ()
+        
+        comment = request.form['comment']
+        
+        if comment == "":
+            flash ('Comment is empty.', category='error')
+        else: 
+            comment = Comment (comment=comment, thread_id=id)
+            db.session.add (comment)
+            db.session.commit ()
 
-        # gemini's reply
-        reply = comment_reply (request.form['comment'])
-        gemini_comment = GeminiComment (comment=reply, comment_id=comment.id, thread_id=id)
-        db.session.add (gemini_comment)
-        db.session.commit ()
+            # gemini's reply
+            reply = comment_reply (request.form['comment'])
+            gemini_comment = GeminiComment (comment=reply, comment_id=comment.id, thread_id=id)
+            db.session.add (gemini_comment)
+            db.session.commit ()
 
     # retrieve topic
     topic = Topic.query.get(title)
