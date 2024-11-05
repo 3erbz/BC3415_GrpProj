@@ -81,8 +81,6 @@ def comment_reply (comment, thread_id):
         model = {"role": "model", "parts" :[item.response]} 
         history.append(model)
 
-    print (history)
-
     # Create the model
     generation_config = {
     "temperature": 1.2,

@@ -33,6 +33,8 @@ def thread (title):
     if request.method == 'POST':
         thread_title = request.form.get('title')
         thread_description = request.form.get('description')
+        print (thread_title)
+        print (thread_description)
 
         if thread_title == "" or thread_description == "":
             flash ('Title or description is empty.', category='error')
@@ -46,7 +48,7 @@ def thread (title):
     threads = Thread.query.filter_by (topic_title=title).all ()
 
     # retrieve topic
-    topic = Topic.query.get(title)
+    topic = Topic.query.get (title)
 
     return render_template ("forum_thread.html", 
                             user=current_user, 

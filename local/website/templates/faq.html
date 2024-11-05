@@ -42,7 +42,7 @@ content%}
             style="border-color: #ddd"
           >
             {{user.user_response}} <br /><strong
-              >Asked on {{user.date.strftime ("%d-%m-%Y %H:%M:%S")}}
+              >Asked on {{user.date.strftime ("%d-%m-%Y, %H:%M:%S")}}
             </strong>
           </p>
         </div>
@@ -81,7 +81,7 @@ content%}
           >
             {{md_response [chat.id-1] | markdown | safe}}
             <strong>
-              Generated on {{chat.date.strftime ("%d-%m-%Y %H:%M:%S")}}</strong
+              Generated on {{chat.date.strftime ("%d-%m-%Y, %H:%M:%S")}}</strong
             >
           </div>
         </div>
@@ -95,12 +95,12 @@ content%}
     <input
       type="text"
       id="user-input"
-      class="form-control"
+      class="form-control mx-3"
       placeholder="Type your question here"
     />
     <div class="input-group-append">
-      <button onclick="askQuestion()" class="btn btn-primary">Send</button>
-      <button onclick="deleteHistory({{user.id}})" class="btn btn-primary">
+      <button onclick="askQuestion()" class="btn btn-primary mx-1">Send</button>
+      <button onclick="deleteHistory({{user.id}})" class="btn btn-danger mx-1">
         Clear History
       </button>
     </div>
@@ -125,6 +125,10 @@ content%}
                 </div>
                 <img src="{{ url_for('static', filename='avatars/user_2_avatar.svg') }}" class="rounded-circle ml-2 user-avatar" alt="User Avatar" style="width: 40px; height: 40px; object-fit: cover; margin-left: 10px;">
             </div>`;
+
+    // scroll to the latest message
+    var last = document.getElementById("chat-box").lastChild;
+    last.scrollIntoView();
 
     // Send question to backend and get response
     fetch("/faq/ask", {

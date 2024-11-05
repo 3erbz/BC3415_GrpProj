@@ -39,8 +39,16 @@ content%}
 
       <div class="stats">
         <div class="stat">
+          <label>Speech Files Uploaded</label>
+          <input type="text" value="{{speech_count}}" readonly />
+        </div>
+        <div class="stat">
+          <label>Text Files Uploaded</label>
+          <input type="text" value="{{text_count}}" readonly />
+        </div>
+        <div class="stat">
           <label>Audio Files Uploaded</label>
-          <input type="text" value="155" readonly />
+          <input type="text" value="{{audio_count}}" readonly />
         </div>
         <div class="stat">
           <label>Videos Completed</label>
