@@ -13,22 +13,25 @@ def chatbot_reply (question, user_id):
 
     # Set up chat session with initial history
     history = []
-    # faq = FAQ.query.filter_by (user_id=user_id).all()
-    # for item in faq:
-    #     print (item.user_response)
+    faq = FAQ.query.filter_by (user_id=user_id).all()
+    for item in faq:
+        print (item.user_response)
 
+    chatbot = Chatbot.query.filter_by (user_id=user_id).all()
+    for item in chatbot:
+        print (item.chatbot_response)
 
     # Create the model
     generation_config = {
     "temperature": 1.2,
     "top_p": 0.95,
     "top_k": 40,
-    "max_output_tokens": 8192,
+    "max_output_tokens": 500,
     "response_mime_type": "text/plain",
     }
 
     model = genai.GenerativeModel(
-    model_name="gemini-1.5-pro-002",
+    model_name="gemini-1.5-flash",
     generation_config=generation_config,
     system_instruction="You should be knowledgeable about various types of scams such as phishing, identity theft, fake investment schemes, and fraudulent loan offers. The chatbot should provide clear, accurate, and reassuring responses, educating users on how to identify scams, avoid common pitfalls, and respond safely if they suspect they’ve encountered a scam. Additionally, you should be able to provide general tips on financial safety and staying secure online. Ensure that the tone is friendly, trustworthy, and easy to understand.",
     )
@@ -41,12 +44,12 @@ def chatbot_reply (question, user_id):
     response = response.text
 
     # send user response to datbase
-    user_question = FAQ(user_response=question)
+    user_question = FAQ(user_response=question, user_id=user_id)
     db.session.add(user_question)
     db.session.commit()
 
     # send chatbot response to datbase
-    chatbot = Chatbot(chatbot_response=response)
+    chatbot = Chatbot(chatbot_response=response, user_id=user_id)
     db.session.add(chatbot)
     db.session.commit()
 
@@ -88,7 +91,7 @@ def comment_reply (comment, thread_id):
     }
 
     model = genai.GenerativeModel(
-    model_name="gemini-1.5-pro-002",
+    model_name="gemini-1.5-pro",
     generation_config=generation_config,
     system_instruction="To provide effective forum responses, stay concise, relevant, and friendly. Acknowledge the user's perspective, then respond directly to key points, using examples where helpful. Keep a neutral, respectful tone, especially on sensitive topics, and encourage further engagement with follow-up questions or additional resources. Adapt language to suit the audience, and proofread for clarity and professionalism before posting. This approach keeps discussions informative and engaging while fostering a positive community atmosphere.",
     )
@@ -114,7 +117,7 @@ def summarise (data):
     genai.configure(api_key=api_key)
 
     # Create the model
-    model = genai.GenerativeModel ("gemini-1.5-pro-002")
+    model = genai.GenerativeModel ("gemini-1.5-pro")
     prompt = "Categorise the gist in less than 5 words without any indication of whether it is a scam or not: " + data
     response = model.generate_content (prompt)
     response = response.text
