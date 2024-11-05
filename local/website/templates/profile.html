@@ -54,6 +54,7 @@ content%}
           <table class="table table-striped">
             <thead>
               <tr>
+                <th scope="col">S/N</th>
                 <th scope="col">Date Posted</th>
                 <th scope="col">Summary</th>
                 <th scope="col">Data Type</th>
@@ -62,6 +63,7 @@ content%}
             <tbody>
               {% for data in scam_data %}
               <tr>
+                <td>{{ data.id }}</td>
                 <td>{{ data.date.strftime ("%d-%m-%Y %H:%M:%S") }}</td>
                 <td><span class="summary">{{ data.summary }}</span></td>
                 <td>{{ data.type }}</td>

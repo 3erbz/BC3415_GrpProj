@@ -33,14 +33,17 @@ content%}
       </div>
     </div>
 
-    <div class="previous-chat">
+    <div id="previous-chat">
+      {% for user in faq %}
       <div class="d-flex justify-content-end align-items-center mb-3">
         <div class="user-message">
           <p
             class="chat-bubble bg-secondary text-white border p-2 rounded"
             style="border-color: #ddd"
           >
-            ${question} <br /><strong>Asked on ${today}</strong>
+            {{user.user_response}} <br /><strong
+              >Asked on {{user.date.strftime ("%d-%m-%Y %H:%M:%S")}}
+            </strong>
           </p>
         </div>
         <img
@@ -55,7 +58,7 @@ content%}
           "
         />
       </div>
-
+      {% for chat in chatbot%} {% if user.id == chat.id %}
       <div class="d-flex justify-content-start align-items-center mb-3">
         <img
           src="{{ url_for('static', filename='assets/meilleur-chatbot.jpg') }}"
@@ -76,10 +79,14 @@ content%}
             class="chat-bubble bg-light text-dark border p-2 rounded"
             style="border-color: #ddd"
           >
-            ${formattedResponse} <strong> Generated on ${today}</strong>
+            {{md_response [chat.id-1] | markdown | safe}}
+            <strong>
+              Generated on {{chat.date.strftime ("%d-%m-%Y %H:%M:%S")}}</strong
+            >
           </div>
         </div>
       </div>
+      {% endif %} {% endfor %} {% endfor %}
     </div>
   </div>
 
@@ -93,6 +100,9 @@ content%}
     />
     <div class="input-group-append">
       <button onclick="askQuestion()" class="btn btn-primary">Send</button>
+      <button onclick="deleteHistory({{user.id}})" class="btn btn-primary">
+        Clear History
+      </button>
     </div>
   </div>
 </div>
@@ -136,14 +146,25 @@ content%}
               <div class="d-flex justify-content-start align-items-center mb-3">
                   <img src="{{ url_for('static', filename='assets/meilleur-chatbot.jpg') }}" class="rounded-circle bot-avatar mr-2" alt="Bot Avatar" style="width: 40px; height: 40px; object-fit: cover; margin-right:10px;">
                   <div class="border-left pl-3 bot-message" style="border-color: black; border-width: 3px;">
-                      <div class="chat-bubble bg-light text-dark border p-2 rounded" style="border-color: #ddd;">${formattedResponse} <strong> Generated on ${today}</strong></div>
+                      <div class="gemini-response">
+                        <div class="chat-bubble bg-light text-dark border p-2 rounded" style="border-color: #ddd;">${formattedResponse} <strong> Generated on ${today}</strong></div>
+                      </div>
                   </div>
               </div>`;
 
-        // Clear input field and scroll to the latest message
-        document.getElementById("chat-box").scrollTop =
-          document.getElementById("chat-box").scrollHeight;
+        // scroll to the latest message
+        var last = document.getElementById("chat-box").lastChild;
+        last.scrollIntoView();
       });
+  }
+
+  function deleteHistory(userId) {
+    fetch("/faq/delete", {
+      method: "POST",
+      body: JSON.stringify({ userId: userId }),
+    }).then((response) => {
+      window.location.href = "/faq";
+    });
   }
 </script>
 

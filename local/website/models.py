@@ -24,14 +24,14 @@ class Scams (db.Model):
 class FAQ (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_response = db.Column (db.String, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.now)
     user_id = db.Column(db.String, db.ForeignKey ('user.id'))
-    chatbot = db.relationship('Chatbot')
 
 class Chatbot (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     chatbot_response = db.Column (db.String, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.now)
     user_id = db.Column(db.String, db.ForeignKey ('user.id'))
-    faq_id = db.Column(db.String, db.ForeignKey ('faq.id'))
 
 class Topic (db.Model):
     title = db.Column(db.String(150), unique=True, nullable=False, primary_key=True)

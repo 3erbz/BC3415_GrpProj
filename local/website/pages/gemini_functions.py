@@ -15,11 +15,13 @@ def chatbot_reply (question, user_id):
     history = []
     faq = FAQ.query.filter_by (user_id=user_id).all()
     for item in faq:
-        print (item.user_response)
+        user = {"role": "user", "parts": [item.user_response]}
+        history.append(user)
 
     chatbot = Chatbot.query.filter_by (user_id=user_id).all()
     for item in chatbot:
-        print (item.chatbot_response)
+        model = {"role": "model", "parts": [item.chatbot_response]}
+        history.append(model)
 
     # Create the model
     generation_config = {
@@ -49,8 +51,8 @@ def chatbot_reply (question, user_id):
     db.session.commit()
 
     # send chatbot response to datbase
-    chatbot = Chatbot(chatbot_response=response, user_id=user_id)
-    db.session.add(chatbot)
+    chatbot_response = Chatbot(chatbot_response=response, user_id=user_id)
+    db.session.add(chatbot_response)
     db.session.commit()
 
     return response
@@ -117,7 +119,7 @@ def summarise (data):
     genai.configure(api_key=api_key)
 
     # Create the model
-    model = genai.GenerativeModel ("gemini-1.5-pro")
+    model = genai.GenerativeModel ("gemini-1.5-flash")
     prompt = "Categorise the gist in less than 5 words without any indication of whether it is a scam or not: " + data
     response = model.generate_content (prompt)
     response = response.text

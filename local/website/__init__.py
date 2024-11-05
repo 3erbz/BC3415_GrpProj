@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+import markdown
 
 # database initialisation
 db = SQLAlchemy ()
@@ -11,6 +12,17 @@ def create_app ():
     app.config ['SECRET_KEY'] = 'BC3415'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
+
+    # Define the custom markdown filter
+    @app.template_filter('markdown')
+    def markdown_filter(text):
+        if text:
+            return markdown.markdown(text)
+        else:
+            return ""
+
+    # Register the filter
+    app.jinja_env.filters['markdown'] = markdown_filter
 
     # import views from different apps
     from .auth.start import auth_views

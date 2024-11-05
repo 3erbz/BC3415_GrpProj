@@ -48,7 +48,10 @@ def thread (title):
     # retrieve topic
     topic = Topic.query.get(title)
 
-    return render_template ("forum_thread.html", user=current_user, threads=threads, topic=topic)
+    return render_template ("forum_thread.html", 
+                            user=current_user, 
+                            threads=threads, 
+                            topic=topic)
 
 @forum_page.route ('/forum/<title>/<int:thread_id>', methods = ['GET', 'POST'])
 @login_required
