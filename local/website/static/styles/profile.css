@@ -1,3 +1,10 @@
+.table-wrapper {
+  max-height: 200px;
+  overflow: auto;
+  display: inline-block;
+  width: 100%;
+}
+
 .profile-container {
   display: flex;
   align-items: flex-start; /* Keeps items aligned at the top */
@@ -66,10 +73,6 @@
 .stats {
   display: flex;
   gap: 10px;
-}
-
-.stat {
-  flex: 1; /* Each stat div takes up half the width of the .stats container */
 }
 
 .stat input {
