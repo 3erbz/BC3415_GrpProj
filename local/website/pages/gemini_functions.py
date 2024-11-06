@@ -117,8 +117,8 @@ def summarise (data):
     genai.configure(api_key=api_key)
 
     # Create the model
-    model = genai.GenerativeModel ("gemini-1.5-flash")
-    prompt = "Categorise the gist in less than 5 words without any indication of whether it is a scam or not: " + data
+    model = genai.GenerativeModel ("gemini-1.5-pro-002")
+    prompt = "Categorise the gist in less than 10 words without any indication of whether it is a scam or not: " + data
     response = model.generate_content (prompt)
     response = response.text
 
