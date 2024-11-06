@@ -9,7 +9,7 @@
   display: flex;
   align-items: flex-start; /* Keeps items aligned at the top */
   justify-content: center;
-  padding: 40px;
+  padding: 35px;
   max-width: 1000px;
   margin: auto;
 }
@@ -31,7 +31,7 @@
 .profile-details {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 
 .profile-name {
@@ -108,7 +108,7 @@
   background-color: #555;
 }
 
-.profile-description {
+.profile-stats {
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -118,33 +118,4 @@
   width: 100%;
   max-width: 600px; /* Matches the width with other elements */
   margin-top: 15px;
-}
-
-.profile-description-title {
-  font-weight: bold;
-  cursor: pointer;
-  color: #333;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.arrow {
-  margin-left: 5px;
-  display: inline-block;
-  border: solid #333;
-  border-width: 0 3px 3px 0;
-  padding: 3px;
-  transform: rotate(45deg); /* Downward arrow */
-  transition: transform 0.2s;
-}
-
-.arrow.up {
-  transform: rotate(-135deg); /* Upward arrow */
-}
-
-.description-content {
-  display: none; /* Initially hidden */
-  margin-top: 10px;
-  color: #555;
 }
