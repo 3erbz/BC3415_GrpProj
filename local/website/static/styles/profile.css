@@ -1,13 +1,7 @@
-.table-wrapper {
-  max-height: 200px;
-  overflow: auto;
-  display: inline-block;
-  width: 100%;
-}
-
+/* General Styling */
 .profile-container {
   display: flex;
-  align-items: flex-start; /* Keeps items aligned at the top */
+  align-items: center;
   justify-content: center;
   padding: 35px;
   max-width: 1000px;
@@ -15,16 +9,16 @@
 }
 
 .profile-image {
-  flex: 0 0 200px; /* Keeps image a fixed width */
+  flex: 0 0 200px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-right: 50px;
+  margin-right: 100px;
+  text-align: center;
 }
 
 .profile-image img {
   width: 100%;
-  object-fit: cover; /* This keeps the image proportionate */
+  object-fit: cover;
 }
 
 /* Profile Information Styling */
@@ -32,6 +26,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+  flex: 1;
 }
 
 .profile-name {
@@ -63,20 +58,21 @@
   font-size: 14px;
 }
 
-.stats,
-.forum-button,
-.profile-description {
-  width: 100%; /* Full width */
-  max-width: 600px; /* Set the maximum width as needed */
-}
-
+/* Responsive Stats Layout */
 .stats {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+  width: 100%;
+}
+
+.stat {
+  flex: 1 1 calc(50% - 10px); /* Two columns on larger screens */
+  min-width: 150px;
 }
 
 .stat input {
-  width: 100%; /* Full width of the .stat container */
+  width: 100%;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -87,14 +83,13 @@
 
 .stat label {
   font-size: 14px;
-  margin-bottom: 5px;
   color: #333;
 }
 
-/* Styling for the forum button to match the width */
+/* Styling for the forum button */
 .forum-button {
   display: inline-block;
-  text-decoration: none; /* Removes the underline */
+  text-decoration: none;
   background-color: #333;
   color: white;
   padding: 10px 20px;
@@ -108,6 +103,7 @@
   background-color: #555;
 }
 
+/* Profile Stats Table */
 .profile-stats {
   background-color: #f9f9f9;
   border: 1px solid #ddd;
@@ -116,6 +112,33 @@
   font-size: 14px;
   color: #555;
   width: 100%;
-  max-width: 600px; /* Matches the width with other elements */
   margin-top: 15px;
+}
+
+/* Table wrapper styling */
+.table-wrapper {
+  max-height: 200px;
+  overflow: auto;
+  width: 100%;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-image {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .stats {
+    flex-direction: column; /* Stack stats on smaller screens */
+  }
+
+  .stat {
+    flex: 1 1 100%; /* Full width on small screens */
+  }
 }
