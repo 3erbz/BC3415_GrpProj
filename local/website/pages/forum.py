@@ -67,15 +67,15 @@ def comment (title, thread_id):
             flash ('Comment is empty.', category='error')
         else: 
             comment = Comment (comment=comment, thread_id=thread_id)
-            db.session.add (comment)
-            db.session.commit ()
+            # db.session.add (comment)
+            # db.session.commit ()
 
             # gemini's reply
             response = comment_reply (request.form['comment'], thread_id)
 
             gemini_comment = GeminiComment (response=response, comment_id=comment.id, thread_id=thread_id)
-            db.session.add (gemini_comment)
-            db.session.commit ()
+            # db.session.add (gemini_comment)
+            # db.session.commit ()
 
     # retrieve topic
     topic = Topic.query.get(title)

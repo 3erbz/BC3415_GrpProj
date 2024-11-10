@@ -58,7 +58,7 @@ def chatbot_reply (question, user_id):
     return response
 
 def comment_reply (comment, thread_id):
-    from website.models import Comment, GeminiComment
+    from website.models import Comment, GeminiComment, Thread
     import google.generativeai as genai
     from dotenv import load_dotenv
     from pathlib import Path
@@ -71,6 +71,10 @@ def comment_reply (comment, thread_id):
 
     # create chat history
     history=[]
+
+    threads = Thread.query.get (thread_id)
+    print (threads)
+
     comments = Comment.query.filter_by (thread_id=thread_id).all ()
     for item in comments:
         user = {"role": "user", "parts" :[item.comment]}
@@ -93,7 +97,7 @@ def comment_reply (comment, thread_id):
     model = genai.GenerativeModel(
     model_name="gemini-1.5-pro",
     generation_config=generation_config,
-    system_instruction="To provide effective forum responses, stay concise, relevant, and friendly. Acknowledge the user's perspective, then respond directly to key points, using examples where helpful. Keep a neutral, respectful tone, especially on sensitive topics, and encourage further engagement with follow-up questions or additional resources. Adapt language to suit the audience, and proofread for clarity and professionalism before posting. This approach keeps discussions informative and engaging while fostering a positive community atmosphere.",
+    system_instruction="To provide effective forum responses, stay concise, relevant, and friendly. Acknowledge the user's perspective, then respond directly to key points, using examples where helpful. Keep a neutral, respectful tone, especially on sensitive topics, and encourage further engagement with follow-up questions or additional resources. Adapt language to suit the audience, and proofread for clarity and professionalism before posting. This approach keeps discussions informative and engaging while fostering a positive community atmosphere. However, should the response that is provided has been analysed as a scam, do not respond and return the response as a scam",
     )
 
     chat_session = model.start_chat(
