@@ -72,9 +72,14 @@ def comment_reply (comment, thread_id):
     # create chat history
     history=[]
 
+    # append thread title and description
     threads = Thread.query.get (thread_id)
-    print (threads)
+    thread_title = {"role": "user", "parts" : f"post title: {[threads.title]}"}
+    thread_desc = {"role": "user", "parts" : f"post description: {[threads.description]}"}
+    history.append(thread_title)
+    history.append(thread_desc)
 
+    # appending existing comments and gemini responses
     comments = Comment.query.filter_by (thread_id=thread_id).all ()
     for item in comments:
         user = {"role": "user", "parts" :[item.comment]}
@@ -97,7 +102,7 @@ def comment_reply (comment, thread_id):
     model = genai.GenerativeModel(
     model_name="gemini-1.5-pro",
     generation_config=generation_config,
-    system_instruction="To provide effective forum responses, stay concise, relevant, and friendly. Acknowledge the user's perspective, then respond directly to key points, using examples where helpful. Keep a neutral, respectful tone, especially on sensitive topics, and encourage further engagement with follow-up questions or additional resources. Adapt language to suit the audience, and proofread for clarity and professionalism before posting. This approach keeps discussions informative and engaging while fostering a positive community atmosphere. However, should the response that is provided has been analysed as a scam, do not respond and return the response as a scam",
+    system_instruction="To provide effective forum responses, stay concise, relevant, and friendly. Begin by reading the post title and description to fully understand the context, then acknowledge the user’s perspective before responding directly to key points. Use examples where helpful and maintain a neutral, respectful tone, especially on sensitive topics. Encourage further engagement with follow-up questions or suggest additional resources when appropriate. Adapt your language to suit the audience, and proofread for clarity and professionalism before posting. This approach keeps discussions informative and engaging, fostering a positive community atmosphere.",
     )
 
     chat_session = model.start_chat(
