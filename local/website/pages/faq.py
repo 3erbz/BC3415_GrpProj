@@ -16,9 +16,9 @@ def faq ():
     chatbot = Chatbot.query.filter_by (user_id=user_id).all()
 
     # convert text to markdown format
-    md_response = []
+    md_response = {}
     for item in chatbot:
-        md_response.append (markdown.markdown(item.chatbot_response))
+        md_response[item.id] = markdown.markdown(item.chatbot_response)
 
     return render_template ("faq.html", user=current_user,
                             faq=faq,

@@ -78,7 +78,7 @@ content %}
             class="chat-bubble bg-light text-dark border p-2 rounded"
             style="border-color: #ddd"
           >
-            {{ md_response[chat.id-1] | markdown | safe }}
+            {{ md_response[chat.id] | markdown | safe }}
             <strong>
               Generated on {{ chat.date.strftime("%d-%m-%Y, %H:%M:%S") }}
             </strong>
