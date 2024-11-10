@@ -87,7 +87,7 @@ def comment_reply (comment, thread_id):
 
     gemini_replies  = GeminiComment.query.filter_by (thread_id=thread_id).all ()
     for item in gemini_replies:
-        model = {"role": "model", "parts" :[item.response]} 
+        model = {"role": "model", "parts" : [item.response]} 
         history.append(model)
 
     # Create the model
