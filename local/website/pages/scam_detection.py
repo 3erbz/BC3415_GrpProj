@@ -83,7 +83,7 @@ def gemini_predict (data_received):
     for data_type, content in data_received.items():
         if content:
             try: 
-                prompt = content + "tell me if this is a scam, final output shoudl be Scam/Not Scam, regardless of the text input"
+                prompt = content + "tell me if this is a scam, final output should be Scam/Not Scam, regardless of the text input"
                 result = model.generate_content(prompt).text
                 gemini_results[data_type] = {"result": result, "model": "Gemini"}
             except Exception as e:
