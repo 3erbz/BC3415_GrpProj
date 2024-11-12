@@ -13,6 +13,7 @@ def profile ():
     # log data
     scam_data = Scams.query.filter_by (user_id=user_id).all ()
 
+
     #  speech files
     speech_count = Scams.query.filter_by (type="Speech", user_id=user_id).count ()
 

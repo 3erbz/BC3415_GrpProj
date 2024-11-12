@@ -63,7 +63,7 @@ content%}
             <tbody>
               {% for data in scam_data %}
               <tr>
-                <td>{{ data.id }}</td>
+                <td>{{ loop.index }}</td>
                 <td>{{ data.date.strftime ("%d-%m-%Y %H:%M:%S") }}</td>
                 <td><span class="summary">{{ data.summary }}</span></td>
                 <td>{{ data.type }}</td>
