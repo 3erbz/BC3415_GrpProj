@@ -45,12 +45,12 @@ def chatbot_reply (question, user_id):
     response = chat_session.send_message(question)
     response = response.text
 
-    # send user response to datbase
+    # send user response to database
     user_question = FAQ(user_response=question, user_id=user_id)
     db.session.add(user_question)
     db.session.commit()
 
-    # send chatbot response to datbase
+    # send chatbot response to database
     chatbot_response = Chatbot(chatbot_response=response, user_id=user_id)
     db.session.add(chatbot_response)
     db.session.commit()
