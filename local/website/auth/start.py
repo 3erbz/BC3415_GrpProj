@@ -4,11 +4,6 @@ from flask_login import login_user, login_required, logout_user, current_user
 
 auth_views = Blueprint ('auth_views', __name__, template_folder='website/templates')
 
-# about page
-@auth_views.route('/about', methods = ['GET','POST'])
-def about ():
-    return render_template('about.html',user=current_user)
-
 @auth_views.route ('/login', methods = ['GET', 'POST'])
 def login ():
     from website.models import User
